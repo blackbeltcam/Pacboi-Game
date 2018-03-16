@@ -1,37 +1,21 @@
 import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import java.awt.Graphics;
 
 public class Maze {
-	int numRows=20;
-	int numCols=20;
-	int width=700;
-	int height=700;
 	
 	
+	int height = 700;
+	int x = 300;
+	int y = 400;
 
-
-public Maze() {
-	int variable = width/numCols;
-	int variable2 = height/numRows;
-JFrame frame = new JFrame();
-	frame.setVisible(true);
-	frame.setSize(width, height);
-JPanel[][] mazePanels = new JPanel[20][20];
-for (int i=0; i<numRows; i+=1){
-	for(int j=0; j<numCols;i+=1) {
-		mazePanels[i][j]=new JPanel();
-		mazePanels[i][j]=new JPanel();
-		mazePanels[i][j].setOpaque(true);
-		mazePanels[i][j].setBackground(Color.GREEN);
-		frame.add(mazePanels[i][j]);
-		
+	public Maze(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
-}
-}
 
-
-
+	public void draw(Graphics g) {
+		
+		g.setColor(Color.BLUE);
+		g.fillRect(x, y, Pacboi.width/numCols, Pacboi.height/numRows);
+	}
 }
