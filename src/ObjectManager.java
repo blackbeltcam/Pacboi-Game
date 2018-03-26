@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class ObjectManager {
 	ArrayList<Maze> mazeList;
-
+	
 	public ObjectManager() {
 		mazeList = new ArrayList<Maze>();
 	}
@@ -11,7 +11,7 @@ public class ObjectManager {
 	public void draw(Graphics g) {
 		for (Maze m : mazeList) {
 			
-			m.draw(g);
+			m.drawGameState(g);
 		}
 	}
 
