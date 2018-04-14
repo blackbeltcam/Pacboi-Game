@@ -1,13 +1,15 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements KeyListener {
 	ObjectManager om;
 	Maze maze;
 	static final int numRows = 15;
@@ -27,23 +29,25 @@ public class GamePanel extends JPanel {
 	int [][] block= {{1,0,0,0,0,0,6,0,0,1,1,1,7,7,7},
 	                 {1,0,1,1,0,0,6,0,0,1,1,1,1,1,1},
 	                 {1,0,1,1,0,0,6,0,0,1,1,1,1,1,4},
+	                 {1,0,1,1,0,0,6,0,0,0,6,0,0,0,0},
 	                 {1,0,1,1,0,0,1,0,0,0,6,0,0,0,0},
 	                 {1,0,0,0,0,0,1,0,0,0,6,0,0,0,0},
 	                 {1,0,0,0,0,0,1,0,0,0,6,0,0,0,0},
 	                 {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+	                 {1,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
+	                 {1,0,1,0,1,1,0,0,0,1,0,1,0,0,0},
+	                 {1,0,2,0,0,0,0,0,0,1,0,0,0,0,0},
+	                 {1,0,1,0,1,1,0,1,1,1,0,0,1,0,0},
+	                 {1,0,1,0,1,1,0,0,0,6,0,0,0,0,0},
+	                 {5,0,1,0,0,0,0,0,0,6,0,0,1,0,0},
+	                 {1,0,1,0,0,0,0,0,0,6,0,0,0,1,1}};
+	                
 	Maze[][] grid = new Maze[numRows][numCols];
 
 	public GamePanel() throws IOException {
 		om = new ObjectManager();
-		ghostImg=ImageIO.read(this.getClass().getResourceAsStream("orangeGhost.png"));
+		ghostImg=ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
+		
 		drawMaze();
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
@@ -76,5 +80,35 @@ public class GamePanel extends JPanel {
 		g.setFont(subFont);
 		g.drawString("a frusterating game for people who have a lot of time", 105, 500);
 
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			System.out.println("u press write");
+		}
+		else if(e.getKeyCode()==KeyEvent.VK_UP) {
+			System.out.println("u press up");
+		}
+		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			System.out.println("u press left");
+		}
+		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+			System.out.println("u press down");
+		}
+		repaint();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

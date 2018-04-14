@@ -30,7 +30,20 @@ public class Maze {
 			g.setColor(Color.BLUE);
 		}
 		else if(block==GamePanel.ghost) {
-			g.drawImage(GamePanel.ghostImg,x,y,blockWidth,blockHeight,null);
+			//g.drawImage(GamePanel.ghostImg,x,y,blockWidth,blockHeight,null);
+			g.setColor(Color.PINK);
+		}
+		else if(block==GamePanel.key) {
+			g.setColor(Color.YELLOW);
+		}
+		else if(block==GamePanel.locked) {
+			g.setColor(Color.CYAN);
+		}
+		else if(block==GamePanel.pacboi) {
+			g.setColor(Color.RED);
+		}
+		else if(block==GamePanel.watermark) {
+			g.setColor(Color.GREEN);
 		}
 		else {
 			g.setColor(Color.BLACK);

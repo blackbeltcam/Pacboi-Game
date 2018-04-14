@@ -8,11 +8,13 @@ public class Pacboi {
 
 	public static void main(String[] args) throws IOException {
 		JFrame frame = new JFrame();
-		frame.add(new GamePanel());
+		GamePanel gp = new GamePanel();
+		frame.add(gp);
 		frame.setVisible(true);
 		frame.setSize(width, height+22);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addKeyListener(gp);
 
 	}
 }
