@@ -25,29 +25,32 @@ public class GamePanel extends JPanel implements KeyListener {
 	Font titleFont;
 	Font subFont;
 	public static BufferedImage ghostImg;
+	public static BufferedImage pacboiImg;
+	int pacboiCol = 0;
+	int pacboiRow = 13;
 	int currentState = 1;
 	int [][] block= {{1,0,0,0,0,0,6,0,0,1,1,1,7,7,7},
-	                 {1,0,1,1,0,0,6,0,0,1,1,1,1,1,1},
-	                 {1,0,1,1,0,0,6,0,0,1,1,1,1,1,4},
-	                 {1,0,1,1,0,0,6,0,0,0,6,0,0,0,0},
-	                 {1,0,1,1,0,0,1,0,0,0,6,0,0,0,0},
-	                 {1,0,0,0,0,0,1,0,0,0,6,0,0,0,0},
-	                 {1,0,0,0,0,0,1,0,0,0,6,0,0,0,0},
+	                 {1,0,1,1,0,0,0,0,0,1,1,1,1,1,1},
+	                 {1,0,1,1,0,0,0,0,0,1,1,1,1,1,4},
+	                 {1,0,1,1,0,0,0,0,0,0,6,0,0,0,0},
+	                 {1,0,1,1,0,0,1,0,0,0,0,0,0,0,0},
+	                 {1,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+	                 {1,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
 	                 {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
 	                 {1,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
 	                 {1,0,1,0,1,1,0,0,0,1,0,1,0,0,0},
 	                 {1,0,2,0,0,0,0,0,0,1,0,0,0,0,0},
 	                 {1,0,1,0,1,1,0,1,1,1,0,0,1,0,0},
 	                 {1,0,1,0,1,1,0,0,0,6,0,0,0,0,0},
-	                 {5,0,1,0,0,0,0,0,0,6,0,0,1,0,0},
-	                 {1,0,1,0,0,0,0,0,0,6,0,0,0,1,1}};
+	                 {5,0,1,0,0,0,0,0,0,0,0,0,1,0,0},
+	                 {1,0,1,0,0,0,0,0,0,0,0,0,0,1,1}};
 	                
 	Maze[][] grid = new Maze[numRows][numCols];
 
 	public GamePanel() throws IOException {
 		om = new ObjectManager();
 		ghostImg=ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
-		
+		pacboiImg=ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		drawMaze();
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
@@ -92,6 +95,10 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			block [pacboiRow] [pacboiCol] = empty;
+			pacboiCol++;
+			block [pacboiRow] [pacboiCol] = pacboi;
+			grid [pacboiRow] [pacboiCol].moveRight();
 			System.out.println("u press write");
 		}
 		else if(e.getKeyCode()==KeyEvent.VK_UP) {
