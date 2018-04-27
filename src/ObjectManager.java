@@ -2,21 +2,25 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class ObjectManager {
-	ArrayList<Maze> mazeList;
+	PacboiObject pacboiobj;
+	ArrayList<MazeObject> mazeList;
 
-	public ObjectManager() {
-		mazeList = new ArrayList<Maze>();
+	public ObjectManager(PacboiObject pacboiobj) {
+		mazeList = new ArrayList<MazeObject>();
+		this.pacboiobj=pacboiobj;
 	}
 
 	public void draw(Graphics g) {
-		for (Maze m : mazeList) {
+		for (MazeObject m : mazeList) {
 
 			m.draw(g);
 		}
+		pacboiobj.draw(g);
 	}
 
-	public void addMazeObject(Maze m) {
+	public void addMazeObject(MazeObject m) {
 		mazeList.add(m);
 	}
+	
 
 }

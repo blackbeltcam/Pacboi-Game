@@ -11,17 +11,18 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements KeyListener {
 	ObjectManager om;
-	Maze maze;
+	MazeObject maze;
+	PacboiObject po;
 	static final int numRows = 15;
 	static final int numCols = 15;
 	static final int empty = 0;
 	static final int fill = 1;
-	static final int locked=2;
-	static final int restricted=3;
-	static final int key=4;
-	static final int pacboi=5;
+	static final int locked = 2;
+	static final int restricted = 3;
+	static final int key = 4;
+	static final int pacboi = 5;
 	static final int ghost = 6;
-	static final int watermark=7;
+	static final int watermark = 7;
 	Font titleFont;
 	Font subFont;
 	public static BufferedImage ghostImg;
@@ -29,28 +30,23 @@ public class GamePanel extends JPanel implements KeyListener {
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	int currentState = 1;
-	int [][] block= {{1,0,0,0,0,0,6,0,0,1,1,1,7,7,7},
-	                 {1,0,1,1,0,0,0,0,0,1,1,1,1,1,1},
-	                 {1,0,1,1,0,0,0,0,0,1,1,1,1,1,4},
-	                 {1,0,1,1,0,0,0,0,0,0,6,0,0,0,0},
-	                 {1,0,1,1,0,0,1,0,0,0,0,0,0,0,0},
-	                 {1,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-	                 {1,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-	                 {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	                 {1,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
-	                 {1,0,1,0,1,1,0,0,0,1,0,1,0,0,0},
-	                 {1,0,2,0,0,0,0,0,0,1,0,0,0,0,0},
-	                 {1,0,1,0,1,1,0,1,1,1,0,0,1,0,0},
-	                 {1,0,1,0,1,1,0,0,0,6,0,0,0,0,0},
-	                 {5,0,1,0,0,0,0,0,0,0,0,0,1,0,0},
-	                 {1,0,1,0,0,0,0,0,0,0,0,0,0,1,1}};
-	                
-	Maze[][] grid = new Maze[numRows][numCols];
+	int speed=10;
+	int[][] block = { { 1, 0, 0, 0, 0, 0, 6, 0, 0, 1, 1, 1, 7, 7, 7 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0 },
+			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0 },
+			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0 },
+			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 6, 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
+			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
+
+	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
 	public GamePanel() throws IOException {
-		om = new ObjectManager();
-		ghostImg=ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
-		pacboiImg=ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
+		po = new PacboiObject(0, 0);
+		om = new ObjectManager(po);
+		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
+		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		drawMaze();
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
@@ -68,7 +64,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void drawMaze() {
 		for (int i = 0; i < numRows; i += 1) {
 			for (int j = 0; j < numCols; j += 1) {
-				Maze m=new Maze(i,j, block[i][j]);
+				MazeObject m = new MazeObject(i, j, block[i][j]);
 				om.addMazeObject(m);
 			}
 		}
@@ -88,27 +84,32 @@ public class GamePanel extends JPanel implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			block [pacboiRow] [pacboiCol] = empty;
-			pacboiCol++;
-			block [pacboiRow] [pacboiCol] = pacboi;
-			grid [pacboiRow] [pacboiCol].moveRight();
-			System.out.println("u press write");
-		}
-		else if(e.getKeyCode()==KeyEvent.VK_UP) {
-			System.out.println("u press up");
-		}
-		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-			System.out.println("u press left");
-		}
-		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-			System.out.println("u press down");
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			po.x+=speed;
+			if (po.x+MazeObject.blockWidth>Pacboi.width) {
+			po.x=Pacboi.width-MazeObject.blockWidth;
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			po.y-=speed;
+			if (po.y<0) {
+				po.y=0;
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			po.x-=speed;
+			if (po.x<0) {
+				po.x=0;
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			po.y+=speed;
+			if (po.y+MazeObject.blockHeight>Pacboi.height) {
+				po.y=Pacboi.height-MazeObject.blockHeight;
+			}
 		}
 		repaint();
 	}
@@ -116,6 +117,6 @@ public class GamePanel extends JPanel implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

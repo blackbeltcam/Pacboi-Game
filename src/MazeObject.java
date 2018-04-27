@@ -2,17 +2,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-public class Maze {
+public class MazeObject {
 	int row;
 	int col;
-	int blockHeight = Pacboi.height / GamePanel.numRows;
-	int blockWidth = Pacboi.width / GamePanel.numCols;
+	static int blockHeight = Pacboi.height / GamePanel.numRows;
+	static int blockWidth = Pacboi.width / GamePanel.numCols;
 	int x;
 	int y;
 	int block;
 	Random ran = new Random();
 
-	public Maze(int row, int col, int block) {
+	public MazeObject(int row, int col, int block) {
 		this.row = row;
 		this.col = col;
 		this.block = block;
@@ -34,7 +34,7 @@ public class Maze {
 			g.setColor(Color.YELLOW);
 		} else if (block == GamePanel.locked) {
 			g.setColor(Color.CYAN);
-		
+
 		} else if (block == GamePanel.watermark) {
 			g.setColor(Color.GREEN);
 		} else {
@@ -44,15 +44,13 @@ public class Maze {
 
 		if (block == GamePanel.ghost) {
 			g.drawImage(GamePanel.ghostImg, x, y, blockWidth, blockHeight, null);
-			
-		}
-		else if (block == GamePanel.pacboi) {
-			g.drawImage(GamePanel.pacboiImg, x, y, blockWidth, blockHeight, null);
+
 		}
 
 	}
-	public void moveRight () {
+
+	public void moveRight() {
 		col++;
-		x=col*blockWidth;
+		x = col * blockWidth;
 	}
 }
