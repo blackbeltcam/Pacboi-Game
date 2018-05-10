@@ -3,11 +3,14 @@ import java.util.ArrayList;
 
 public class ObjectManager {
 	PacboiObject pacboiobj;
+	//GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
+	ArrayList<GhostObject> ghostList;
 
-	public ObjectManager(PacboiObject pacboiobj) {
+	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList) {
 		mazeList = new ArrayList<MazeObject>();
 		this.pacboiobj=pacboiobj;
+		this.ghostList=ghostList;
 	}
 
 	public void draw(Graphics g) {
@@ -15,9 +18,18 @@ public class ObjectManager {
 
 			m.draw(g);
 		}
+		for (GhostObject gh : ghostList) {
+			gh.draw(g);
+			moveGhost();
+		}
 		pacboiobj.draw(g);
+		
 	}
-
+public void moveGhost() {
+	for (GhostObject gh : ghostList) {
+		gh.y++;
+	}
+}
 	public void addMazeObject(MazeObject m) {
 		mazeList.add(m);
 	}

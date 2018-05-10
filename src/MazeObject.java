@@ -42,10 +42,10 @@ public class MazeObject {
 		}
 		g.fillRect(x, y, blockWidth, blockHeight);
 
-		if (block == GamePanel.ghost) {
-			g.drawImage(GamePanel.ghostImg, x, y, blockWidth, blockHeight, null);
-
-		}
+//		if (block == GamePanel.ghost) {
+//			g.drawImage(GamePanel.ghostImg, x, y, blockWidth, blockHeight, null);
+//
+//		}
 
 	}
 

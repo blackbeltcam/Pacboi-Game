@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -13,6 +14,8 @@ public class GamePanel extends JPanel implements KeyListener {
 	ObjectManager om;
 	MazeObject maze;
 	PacboiObject po;
+	GhostObject go;
+	ArrayList<GhostObject> ghostList= new ArrayList();
 	static final int numRows = 15;
 	static final int numCols = 15;
 	static final int empty = 0;
@@ -31,20 +34,26 @@ public class GamePanel extends JPanel implements KeyListener {
 	int pacboiRow = 13;
 	int currentState = 1;
 	int speed=10;
-	int[][] block = { { 1, 0, 0, 0, 0, 0, 6, 0, 0, 1, 1, 1, 7, 7, 7 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0 },
+	int[][] block = { { 1, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 1, 1, 1, 7, 7, 7 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0 },
 			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0 },
-			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 6, 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
+			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/*this one*/, 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
 
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
 	public GamePanel() throws IOException {
+		
 		po = new PacboiObject(0, 0);
-		om = new ObjectManager(po);
+		ghostList.add(new GhostObject(275, 0));
+		ghostList.add(new GhostObject(550, 138));
+		ghostList.add(new GhostObject(330, 553));
+		om = new ObjectManager(po, ghostList);
+		go = new GhostObject(100, 100);
+		
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		drawMaze();
