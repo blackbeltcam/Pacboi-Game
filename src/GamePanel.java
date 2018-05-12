@@ -34,6 +34,10 @@ public class GamePanel extends JPanel implements KeyListener {
 	int pacboiRow = 13;
 	int currentState = 1;
 	int speed=10;
+	boolean keyPressedR;
+	boolean keyPressedD;
+	boolean keyPressedL;
+	boolean keyPressedU;
 	int[][] block = { { 1, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 1, 1, 1, 7, 7, 7 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -89,32 +93,28 @@ public class GamePanel extends JPanel implements KeyListener {
 		g.drawString("a frusterating game for people who have a lot of time", 105, 500);
 
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			po.x+=speed;
+	public static void move() {
+		if (keyPressedR==true) {
 			if (po.x+MazeObject.blockWidth>Pacboi.width) {
-			po.x=Pacboi.width-MazeObject.blockWidth;
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				po.x=Pacboi.width-MazeObject.blockWidth;
+				po.x+=speed;
+				}
+			
+				
+				
+			
+			
+		} else if (keyPressedU==true) {
 			po.y-=speed;
 			if (po.y<0) {
 				po.y=0;
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		} else if (keyPressedL==true) {
 			po.x-=speed;
 			if (po.x<0) {
 				po.x=0;
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		} else if (keyPressedD==true) {
 			po.y+=speed;
 			if (po.y+MazeObject.blockHeight>Pacboi.height) {
 				po.y=Pacboi.height-MazeObject.blockHeight;
@@ -122,10 +122,35 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		repaint();
 	}
+	
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		keyPressedR=true;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			keyPressedU=true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			keyPressedL=true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			keyPressedD=true;
+		}
+		repaint();
+	}
 
+	
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

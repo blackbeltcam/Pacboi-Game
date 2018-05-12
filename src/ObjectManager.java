@@ -23,11 +23,11 @@ public class ObjectManager {
 			moveGhost();
 		}
 		pacboiobj.draw(g);
-		
+		GamePanel.move();
 	}
 public void moveGhost() {
 	for (GhostObject gh : ghostList) {
-		gh.y++;
+		gh.y+=0.01;
 	}
 }
 	public void addMazeObject(MazeObject m) {
