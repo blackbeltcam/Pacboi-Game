@@ -9,13 +9,16 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import javafx.scene.input.KeyCode;
 
 public class GamePanel extends JPanel implements KeyListener {
 	ObjectManager om;
 	MazeObject maze;
 	PacboiObject po;
 	GhostObject go;
-	ArrayList<GhostObject> ghostList= new ArrayList();
+	ArrayList<GhostObject> ghostList = new ArrayList();
 	static final int numRows = 15;
 	static final int numCols = 15;
 	static final int empty = 0;
@@ -33,30 +36,33 @@ public class GamePanel extends JPanel implements KeyListener {
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	int currentState = 1;
-	int speed=10;
-	boolean keyPressedR;
-	boolean keyPressedD;
-	boolean keyPressedL;
-	boolean keyPressedU;
-	int[][] block = { { 1, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 1, 1, 1, 7, 7, 7 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/*this one*/, 0, 0, 0, 0 },
+	int speed = 10;
+	Timer timer;
+	boolean keyPressedR = false;
+	boolean keyPressedD = false;
+	boolean keyPressedL = false;
+	boolean keyPressedU = false;
+	int[][] block = { { 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0 },
 			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0 },
-			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/*this one*/, 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
-			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
+			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/* this one */, 0, 0, 0, 0, 0 },
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
 
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
 	public GamePanel() throws IOException {
-		
+		timer = new Timer(1000 / 60, null);
 		po = new PacboiObject(0, 0);
 		ghostList.add(new GhostObject(275, 0));
 		ghostList.add(new GhostObject(550, 138));
 		ghostList.add(new GhostObject(330, 553));
-		om = new ObjectManager(po, ghostList);
+		om = new ObjectManager(po, ghostList, this);
 		go = new GhostObject(100, 100);
+		
 		
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
@@ -93,64 +99,74 @@ public class GamePanel extends JPanel implements KeyListener {
 		g.drawString("a frusterating game for people who have a lot of time", 105, 500);
 
 	}
-	public static void move() {
-		if (keyPressedR==true) {
-			if (po.x+MazeObject.blockWidth>Pacboi.width) {
-				po.x=Pacboi.width-MazeObject.blockWidth;
-				po.x+=speed;
-				}
-			
-				
-				
-			
-			
-		} else if (keyPressedU==true) {
-			po.y-=speed;
-			if (po.y<0) {
-				po.y=0;
+
+	public void move() {
+
+		if (keyPressedR == true) {
+			System.out.println("it move");
+			if (po.x + MazeObject.blockWidth > Pacboi.width) {
+				po.x = Pacboi.width - MazeObject.blockWidth;
 			}
-		} else if (keyPressedL==true) {
-			po.x-=speed;
-			if (po.x<0) {
-				po.x=0;
+			else {
+				po.x += speed;
 			}
-		} else if (keyPressedD==true) {
-			po.y+=speed;
-			if (po.y+MazeObject.blockHeight>Pacboi.height) {
-				po.y=Pacboi.height-MazeObject.blockHeight;
+
+		} else if (keyPressedU == true) {
+			po.y -= speed;
+			if (po.y < 0) {
+				po.y = 0;
+			}
+		} else if (keyPressedL == true) {
+			po.x -= speed;
+			if (po.x < 0) {
+				po.x = 0;
+			}
+		} else if (keyPressedD == true) {
+			po.y += speed;
+			if (po.y + MazeObject.blockHeight > Pacboi.height) {
+				po.y = Pacboi.height - MazeObject.blockHeight;
 			}
 		}
 		repaint();
 	}
-	
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		keyPressedR=true;
-			
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
-			keyPressedU=true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			keyPressedL=true;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			keyPressedD=true;
+		System.out.println("it move pt. 2");
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
+			keyPressedR = true;
+			System.out.println("it move pt. 42");
+
+		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar()=='w') {
+			keyPressedU = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar()=='a') {
+			keyPressedL = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar()=='s') {
+			keyPressedD = true;
 		}
 		repaint();
 	}
-
-	
-
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
+			keyPressedR = false;
+			System.out.println("it move pt. 11");
+
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar()=='w') {
+			keyPressedU = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar()=='a') {
+			keyPressedL = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar()=='s') {
+			keyPressedD = false;
+		}
 	}
 }
