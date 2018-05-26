@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,7 @@ import javax.swing.Timer;
 
 import javafx.scene.input.KeyCode;
 
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	ObjectManager om;
 	MazeObject maze;
 	PacboiObject po;
@@ -36,7 +38,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	int currentState = 1;
-	int speed = 10;
+	double speed = 1;
 	Timer timer;
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
@@ -55,20 +57,20 @@ public class GamePanel extends JPanel implements KeyListener {
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
 	public GamePanel() throws IOException {
-		timer = new Timer(1000 / 60, null);
+		timer = new Timer(1000 / 60, this);
 		po = new PacboiObject(0, 0);
 		ghostList.add(new GhostObject(275, 0));
 		ghostList.add(new GhostObject(550, 138));
 		ghostList.add(new GhostObject(330, 553));
 		om = new ObjectManager(po, ghostList, this);
 		go = new GhostObject(100, 100);
-		
-		
+
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		drawMaze();
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
+		timer.start();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -90,6 +92,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 
 	public void drawMenuState(Graphics g) {
+		// Method not Being Called
 		g.setColor(Color.PINK);
 		g.fillRect(0, 0, Pacboi.height, Pacboi.width);
 		g.setColor(Color.BLACK);
@@ -101,31 +104,46 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 
 	public void move() {
+		if (keyPressedL && keyPressedU) {
+			po.y -= speed;
+			po.x -= speed;
+		} else if (keyPressedL && keyPressedD) {
+			po.x -= speed;
+			po.y += speed;
+		} else if (keyPressedR && keyPressedU) {
+			po.x += speed;
+			po.y -= speed;
+		} else if (keyPressedR && keyPressedD) {
+			po.x += speed;
+			po.y += speed;
+		}
 
-		if (keyPressedR == true) {
-			System.out.println("it move");
-			if (po.x + MazeObject.blockWidth > Pacboi.width) {
-				po.x = Pacboi.width - MazeObject.blockWidth;
-			}
-			else {
-				po.x += speed;
-			}
+		else if (keyPressedR == true) {
+			
+
+			po.x += speed;
 
 		} else if (keyPressedU == true) {
 			po.y -= speed;
-			if (po.y < 0) {
-				po.y = 0;
-			}
+			
 		} else if (keyPressedL == true) {
 			po.x -= speed;
-			if (po.x < 0) {
-				po.x = 0;
-			}
+			
 		} else if (keyPressedD == true) {
 			po.y += speed;
-			if (po.y + MazeObject.blockHeight > Pacboi.height) {
-				po.y = Pacboi.height - MazeObject.blockHeight;
-			}
+			
+		}
+		if (po.x + MazeObject.blockWidth > Pacboi.width) {
+			po.x = Pacboi.width - MazeObject.blockWidth;
+		}
+		if (po.y < 0) {
+			po.y = 0;
+		}
+		if (po.y + MazeObject.blockHeight > Pacboi.height) {
+			po.y = Pacboi.height - MazeObject.blockHeight;
+		}
+		if (po.x < 0) {
+			po.x = 0;
 		}
 		repaint();
 	}
@@ -133,16 +151,16 @@ public class GamePanel extends JPanel implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("it move pt. 2");
+	
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
 			keyPressedR = true;
-			System.out.println("it move pt. 42");
+			
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar()=='w') {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar() == 'w') {
 			keyPressedU = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar()=='a') {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar() == 'a') {
 			keyPressedL = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar()=='s') {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar() == 's') {
 			keyPressedD = true;
 		}
 		repaint();
@@ -158,15 +176,20 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
 			keyPressedR = false;
-			System.out.println("it move pt. 11");
+			
 
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar()=='w') {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar() == 'w') {
 			keyPressedU = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar()=='a') {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar() == 'a') {
 			keyPressedL = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar()=='s') {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar() == 's') {
 			keyPressedD = false;
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

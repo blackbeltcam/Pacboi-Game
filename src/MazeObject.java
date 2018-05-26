@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-public class MazeObject {
+public class MazeObject extends GameObject {
 	int row;
 	int col;
 	static int blockHeight = Pacboi.height / GamePanel.numRows;
@@ -49,8 +49,8 @@ public class MazeObject {
 
 	}
 
-	public void moveRight() {
-		col++;
-		x = col * blockWidth;
-	}
+	
+public void update() {
+	
+}
 }

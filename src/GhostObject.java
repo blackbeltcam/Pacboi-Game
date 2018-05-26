@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 
-public class GhostObject {
+public class GhostObject extends GameObject {
 	double x;
 	double y;
 
@@ -11,5 +11,8 @@ public class GhostObject {
 
 	public void draw(Graphics g) {
 		g.drawImage(GamePanel.ghostImg, (int)x, (int)y, MazeObject.blockWidth, MazeObject.blockHeight, null);
+	}
+	public void update() {
+		
 	}
 }

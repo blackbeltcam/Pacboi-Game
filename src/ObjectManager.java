@@ -7,6 +7,7 @@ public class ObjectManager {
 	//GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
 	ArrayList<GhostObject> ghostList;
+	double direction=0.3;
 
 	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList, GamePanel gp) {
 		mazeList = new ArrayList<MazeObject>();
@@ -17,7 +18,7 @@ public class ObjectManager {
 
 	public void draw(Graphics g) {
 		for (MazeObject m : mazeList) {
-
+			
 			m.draw(g);
 		}
 		for (GhostObject gh : ghostList) {
@@ -29,12 +30,24 @@ public class ObjectManager {
 	}
 public void moveGhost() {
 	for (GhostObject gh : ghostList) {
-		gh.y+=0.01;
+		if (gh.y>Pacboi.height || gh.y<0) {
+			direction=-direction;
+		}
+		gh.y+=direction;
 	}
 }
 	public void addMazeObject(MazeObject m) {
 		mazeList.add(m);
 	}
-	
+	public void update() {
+for (MazeObject m : mazeList) {
+			
+			m.update();
+		}
+		for (GhostObject gh : ghostList) {
+			gh.update();
+		}
+		pacboiobj.update();
+	}
 
 }
