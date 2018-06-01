@@ -1,8 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Random;
 
-public class MazeObject extends GameObject {
+public class MazeObject  {
 	int row;
 	int col;
 	static int blockHeight = Pacboi.height / GamePanel.numRows;
@@ -10,6 +11,7 @@ public class MazeObject extends GameObject {
 	int x;
 	int y;
 	int block;
+	Rectangle mazeCollision;
 	Random ran = new Random();
 
 	public MazeObject(int row, int col, int block) {
@@ -18,6 +20,7 @@ public class MazeObject extends GameObject {
 		this.block = block;
 		x = col * blockWidth;
 		y = row * blockHeight;
+		mazeCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
 
 	public void draw(Graphics g) {
@@ -46,7 +49,7 @@ public class MazeObject extends GameObject {
 //			g.drawImage(GamePanel.ghostImg, x, y, blockWidth, blockHeight, null);
 //
 //		}
-
+mazeCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
 
 	
