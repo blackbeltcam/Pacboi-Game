@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import javafx.scene.input.KeyCode;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	ObjectManager om;
@@ -36,7 +35,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static BufferedImage pacboiImg;
 	int pacboiCol = 0;
 	int pacboiRow = 13;
-	int currentState = 1;
+	int currentState = 0;
 	double speed = 10;
 	Timer timer;
 	boolean keyPressedR = false;
@@ -90,46 +89,51 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void drawMenuState(Graphics g) {
-		// Method not Being Called
+		// To activate, change currentState variable to 0
 		g.setColor(Color.PINK);
 		g.fillRect(0, 0, Pacboi.height, Pacboi.width);
 		g.setColor(Color.BLACK);
 		g.setFont(titleFont);
 		g.drawString("Welcome To Pacboi!", 90, 100);
 		g.setFont(subFont);
-		g.drawString("a frusterating game for people who have a lot of time", 105, 500);
+		g.setColor(Color.WHITE);
+		g.drawString("Press Space to Start", 200, 280);
+
+		g.setColor(Color.BLACK);
+		g.drawString("A frusterating game for people who have a lot of time.", 90, 125);
 
 	}
 
 	public void move() {
-		if (keyPressedL && keyPressedU) {
-			po.y -= speed;
-			po.x -= speed;
-		} else if (keyPressedL && keyPressedD) {
-			po.x -= speed;
-			po.y += speed;
-		} else if (keyPressedR && keyPressedU) {
-			po.x += speed;
-			po.y -= speed;
-		} else if (keyPressedR && keyPressedD) {
-			po.x += speed;
-			po.y += speed;
-		}
 
-		else if (keyPressedR == true) {
-			
+		// if (keyPressedL && keyPressedU) {
+		// po.y -= speed;
+		// po.x -= speed;
+		// } else if (keyPressedL && keyPressedD) {
+		// po.x -= speed;
+		// po.y += speed;
+		// } else if (keyPressedR && keyPressedU) {
+		// po.x += speed;
+		// po.y -= speed;
+		// } else if (keyPressedR && keyPressedD) {
+		// po.x += speed;
+		// po.y += speed;
+		// }
+
+		if (keyPressedR == true) {
 
 			po.x += speed;
 
-		} else if (keyPressedU == true) {
-			po.y -= speed;
-			
 		} else if (keyPressedL == true) {
 			po.x -= speed;
-			
+
+		}
+		if (keyPressedU == true) {
+			po.y -= speed;
+
 		} else if (keyPressedD == true) {
 			po.y += speed;
-			
+
 		}
 		if (po.x + MazeObject.blockWidth > Pacboi.width) {
 			po.x = Pacboi.width - MazeObject.blockWidth;
@@ -149,47 +153,72 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-	
-	
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
-			keyPressedR = true;
-			
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			currentState = 1;
+		}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar() == 'w') {
+		if (e.getKeyCode() == KeyEvent.VK_I) {
+			JOptionPane.showMessageDialog(null,
+					"Use Arrow Keys to Move \n The aim of the game is ot grab the key, unlock the second area, and finish the level. \n It is not as simple as it seems though as PacBoi moves very fast so it is hard to control him.");
+		}
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			keyPressedR = true;
+
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			keyPressedR = true;
+
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			keyPressedU = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar() == 'a') {
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			keyPressedU = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			keyPressedL = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar() == 's') {
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_A) {
+			keyPressedL = true;
+
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			keyPressedD = true;
 		}
-		move();
+
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			keyPressedD = true;
+		}
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyChar() == 'd') {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			keyPressedR = false;
-			
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyChar() == 'w') {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			keyPressedU = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyChar() == 'a') {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			keyPressedL = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyChar() == 's') {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			keyPressedD = false;
 		}
-		
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-om.update();
-om.checkCollision();
+
+		om.update();
+		om.checkCollision();
+		move();
 	}
 }
