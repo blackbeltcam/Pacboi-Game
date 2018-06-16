@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,7 +37,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	int currentState = 0;
-	double speed = 10;
+	int speed = 5;
+	int PacboiStartX = 0;
+	int PacboiStartY = 605;
 	Timer timer;
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
@@ -56,7 +59,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	public GamePanel() throws IOException {
 		timer = new Timer(1000 / 60, this);
-		po = new PacboiObject(50, 0);
+		po = new PacboiObject(PacboiStartX, PacboiStartY);
 		ghostList.add(new GhostObject(275, 0));
 		ghostList.add(new GhostObject(550, 138));
 		ghostList.add(new GhostObject(330, 553));
@@ -121,28 +124,51 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// }
 
 		if (keyPressedR == true) {
-
-			po.x += speed;
+			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
+			if (om.checkMazeCollision(R)) {
+				die();
+				keyPressedR=false;
+			} else {
+				po.x += speed;
+			}
 
 		} else if (keyPressedL == true) {
-			po.x -= speed;
+			Rectangle L = new Rectangle(po.x - speed, po.y, po.width, po.height);
+			if (om.checkMazeCollision(L)) {
+				die();
+				keyPressedL=false;
+			} else {
+				po.x -= speed;
+			}
 
 		}
 		if (keyPressedU == true) {
-			po.y -= speed;
+			Rectangle U = new Rectangle(po.x, po.y - speed, po.width, po.height);
+			if (om.checkMazeCollision(U)) {
+				die();
+				keyPressedU=false;
+			} else {
+				po.y -= speed;
+			}
 
 		} else if (keyPressedD == true) {
-			po.y += speed;
+			Rectangle D = new Rectangle(po.x, po.y + speed, po.width, po.height);
+			if (om.checkMazeCollision(D)) {
+				die();
+				keyPressedD=false;
+			} else {
+				po.y += speed;
+			}
 
 		}
-		if (po.x + MazeObject.blockWidth > Pacboi.width) {
-			po.x = Pacboi.width - MazeObject.blockWidth;
+		if (po.x + PacboiObject.width > Pacboi.width) {
+			po.x = Pacboi.width - PacboiObject.width;
 		}
 		if (po.y < 0) {
 			po.y = 0;
 		}
-		if (po.y + MazeObject.blockHeight > Pacboi.height) {
-			po.y = Pacboi.height - MazeObject.blockHeight;
+		if (po.y + PacboiObject.height > Pacboi.height) {
+			po.y = Pacboi.height - PacboiObject.height;
 		}
 		if (po.x < 0) {
 			po.x = 0;
@@ -195,7 +221,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			keyPressedD = true;
 		}
-
+		e.consume();
 	}
 
 	@Override
@@ -213,12 +239,20 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	}
 
+	public void die() {
+		JOptionPane.showMessageDialog(null, "u suck scrub");
+		 po.x=PacboiStartX;
+		 po.y=PacboiStartY;
+		 om.incrementDeath();
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 
 		om.update();
-		om.checkCollision();
+		// om.checkCollision();
 		move();
+
 	}
 }
