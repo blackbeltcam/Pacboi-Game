@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 public class GhostObject {
 	int x;
 	int y;
+	int direction = 1;
 	Rectangle ghostCollision;
 	
 	public GhostObject(int x, int y) {

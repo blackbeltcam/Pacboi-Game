@@ -9,8 +9,8 @@ public class ObjectManager {
 	// GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
 	ArrayList<GhostObject> ghostList;
-	double direction = 1;
-	private int deathCounter = 0;
+	
+	private static Integer deathCounter = 0;
 
 	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList) {
 		mazeList = new ArrayList<MazeObject>();
@@ -18,10 +18,7 @@ public class ObjectManager {
 		this.ghostList = ghostList;
 
 	}
-	public void incrementDeath() {
-		deathCounter++;
-	}
-	
+
 	public void draw(Graphics g) {
 		for (MazeObject m : mazeList) {
 			m.draw(g);
@@ -29,11 +26,10 @@ public class ObjectManager {
 				if (pacboiobj.pacCollision.intersects(m.mazeCollision)) {
 					System.out.println("HELP ME IM TRAPED");
 				}
-				
+
 			}
 			
-		}
-		
+
 		
 		for (GhostObject gh : ghostList) {
 			gh.draw(g);
@@ -41,18 +37,22 @@ public class ObjectManager {
 		}
 		pacboiobj.draw(g);
 		g.setColor(Color.WHITE);
-		
+
 		g.drawString("Deaths", 2, 20);
-		g.drawString("5", 20, 35);
+		g.drawString(deathCounter.toString(), 20, 35);
+		}
 	}
-	
+
+	public void incrementDeath() {
+		deathCounter++;
+	}
 
 	public void moveGhost(GhostObject gh) {
 
 		if (gh.y > Pacboi.height || gh.y < 0) {
-			direction = -direction;
+			gh.direction = -gh.direction;
 		}
-		gh.y += direction;
+		gh.y += gh.direction;
 
 	}
 
@@ -72,8 +72,8 @@ public class ObjectManager {
 	}
 
 	public boolean checkMazeCollision(Rectangle P) {
-		for (MazeObject m: mazeList) {
-			if (m.block==GamePanel.fill) {
+		for (MazeObject m : mazeList) {
+			if (m.block == GamePanel.fill) {
 				if (P.intersects(m.mazeCollision)) {
 					return true;
 				}
