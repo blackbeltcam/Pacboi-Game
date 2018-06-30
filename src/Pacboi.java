@@ -5,7 +5,7 @@ import javax.swing.Timer;
 
 public class Pacboi {
 	static final int width = 690;
-	static final int height = 690;
+	static final int height = 782;
 	
 
 	public static void main(String[] args) throws IOException {

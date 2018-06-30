@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -6,16 +7,19 @@ import java.util.ArrayList;
 public class ObjectManager {
 	PacboiObject pacboiobj;
 	GamePanel gp;
+	Font deathFont;
 	// GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
 	ArrayList<GhostObject> ghostList;
 	
+
 	private static Integer deathCounter = 0;
 
 	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList) {
 		mazeList = new ArrayList<MazeObject>();
 		this.pacboiobj = pacboiobj;
 		this.ghostList = ghostList;
+		deathFont = new Font("TimesRoman", Font.BOLD, 40);
 
 	}
 
@@ -28,32 +32,20 @@ public class ObjectManager {
 				}
 
 			}
-			
-
-		
+		}
 		for (GhostObject gh : ghostList) {
 			gh.draw(g);
-			moveGhost(gh);
+
 		}
 		pacboiobj.draw(g);
 		g.setColor(Color.WHITE);
-
-		g.drawString("Deaths", 2, 20);
-		g.drawString(deathCounter.toString(), 20, 35);
-		}
+		g.setFont(deathFont);
+		g.drawString("Deaths", 2, 30);
+		g.drawString(deathCounter.toString(), 50, 80);
 	}
 
 	public void incrementDeath() {
 		deathCounter++;
-	}
-
-	public void moveGhost(GhostObject gh) {
-
-		if (gh.y > Pacboi.height || gh.y < 0) {
-			gh.direction = -gh.direction;
-		}
-		gh.y += gh.direction;
-
 	}
 
 	public void addMazeObject(MazeObject m) {
@@ -61,19 +53,31 @@ public class ObjectManager {
 	}
 
 	public void update() {
-		for (MazeObject m : mazeList) {
 
-			m.update();
-		}
 		for (GhostObject gh : ghostList) {
+			Rectangle ghostBox = new Rectangle(gh.x, gh.y + gh.direction, MazeObject.blockWidth,
+					MazeObject.blockHeight);
+
+			if (checkMazeCollision(ghostBox)) {
+				gh.direction = -gh.direction;
+			}
 			gh.update();
 		}
+
 		pacboiobj.update();
 	}
-
+	public boolean checkGhostCollision(Rectangle F) {
+		for (GhostObject g : ghostList) {
+			if (g.ghostCollision.intersects(F)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean checkMazeCollision(Rectangle P) {
 		for (MazeObject m : mazeList) {
-			if (m.block == GamePanel.fill) {
+			if (m.block == GamePanel.fill || m.block == GamePanel.scoreboard) {
 				if (P.intersects(m.mazeCollision)) {
 					return true;
 				}

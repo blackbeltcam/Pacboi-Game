@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	MazeObject maze;
 	PacboiObject po;
 	ArrayList<GhostObject> ghostList = new ArrayList();
-	static final int numRows = 15;
+	static final int numRows = 17;
 	static final int numCols = 15;
 	static final int empty = 0;
 	static final int fill = 1;
@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int pacboi = 5;
 	static final int ghost = 6;
 	static final int watermark = 7;
+	static final int scoreboard = 8;
 	Font titleFont;
 	Font subFont;
 	public static BufferedImage ghostImg;
@@ -39,13 +40,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int currentState = 0;
 	int speed = 5;
 	int PacboiStartX = 0;
-	int PacboiStartY = 605;
+	int PacboiStartY = 697;
 	Timer timer;
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
 	boolean keyPressedL = false;
 	boolean keyPressedU = false;
-	int[][] block = { { 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
+	int[][] block ={ { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8}, { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8}, { 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -60,9 +61,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public GamePanel() throws IOException {
 		timer = new Timer(1000 / 60, this);
 		po = new PacboiObject(PacboiStartX, PacboiStartY);
-		ghostList.add(new GhostObject(275, 0));
-		ghostList.add(new GhostObject(550, 138));
-		ghostList.add(new GhostObject(330, 553));
+		ghostList.add(new GhostObject(275, 92));
+		ghostList.add(new GhostObject(550, 230));
+		ghostList.add(new GhostObject(330, 645));
 		om = new ObjectManager(po, ghostList);
 
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
@@ -174,13 +175,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (po.x < 0) {
 			po.x = 0;
 		}
+		om.checkGhostCollision(po.pacCollision);
 		repaint();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		e.consume();
 	}
 
 	@Override
@@ -237,7 +239,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			keyPressedD = false;
 		}
-
+		e.consume();
 	}
 
 	public void die() {
@@ -254,6 +256,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		om.update();
 		// om.checkCollision();
 		move();
-
+		
 	}
 }
