@@ -41,6 +41,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int speed = 5;
 	int PacboiStartX = 0;
 	int PacboiStartY = 697;
+	
+	int fps=60;
 	Timer timer;
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
@@ -59,12 +61,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
 	public GamePanel() throws IOException {
-		timer = new Timer(1000 / 60, this);
+		timer = new Timer(1000 / fps, this);
+		
 		po = new PacboiObject(PacboiStartX, PacboiStartY);
 		ghostList.add(new GhostObject(275, 92));
 		ghostList.add(new GhostObject(550, 230));
 		ghostList.add(new GhostObject(330, 645));
-		om = new ObjectManager(po, ghostList);
+		om = new ObjectManager(po, ghostList, fps);
 
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
@@ -243,11 +246,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void die() {
-		JOptionPane.showMessageDialog(null, "u suck scrub");
+		
+		JOptionPane.showMessageDialog(this, "u suck scrub");
 		 po.x=PacboiStartX;
 		 po.y=PacboiStartY;
 		 om.incrementDeath();
-	}
+		}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -256,6 +261,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		om.update();
 		// om.checkCollision();
 		move();
+		om.score--;
 		
 	}
 }

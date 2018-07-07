@@ -8,6 +8,8 @@ public class ObjectManager {
 	PacboiObject pacboiobj;
 	GamePanel gp;
 	Font deathFont;
+	Integer score;
+	int fps;
 	// GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
 	ArrayList<GhostObject> ghostList;
@@ -15,11 +17,13 @@ public class ObjectManager {
 
 	private static Integer deathCounter = 0;
 
-	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList) {
+	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList, int fps) {
 		mazeList = new ArrayList<MazeObject>();
 		this.pacboiobj = pacboiobj;
 		this.ghostList = ghostList;
+		this.fps=fps;
 		deathFont = new Font("TimesRoman", Font.BOLD, 40);
+		score=fps*34;
 
 	}
 
@@ -42,6 +46,9 @@ public class ObjectManager {
 		g.setFont(deathFont);
 		g.drawString("Deaths", 2, 30);
 		g.drawString(deathCounter.toString(), 50, 80);
+		
+		g.drawString("Highscore", 515, 30);
+		g.drawString(score.toString(), 515, 80);
 	}
 
 	public void incrementDeath() {
