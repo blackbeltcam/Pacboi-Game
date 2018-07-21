@@ -9,6 +9,7 @@ public class ObjectManager {
 	GamePanel gp;
 	Font deathFont;
 	Integer score;
+	Rectangle respawn;
 	int fps;
 	// GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
@@ -49,6 +50,8 @@ public class ObjectManager {
 		
 		g.drawString("Highscore", 515, 30);
 		g.drawString(score.toString(), 515, 80);
+		
+		
 	}
 
 	public void incrementDeath() {

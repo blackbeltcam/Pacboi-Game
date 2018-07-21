@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -41,14 +42,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int speed = 5;
 	int PacboiStartX = 0;
 	int PacboiStartY = 697;
-	
-	int fps=60;
+
+	int fps = 60;
 	Timer timer;
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
 	boolean keyPressedL = false;
 	boolean keyPressedU = false;
-	int[][] block ={ { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8}, { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8}, { 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
+	boolean dying;
+	int[][] block = { { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 }, { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 },
+			{ 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -62,7 +65,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	public GamePanel() throws IOException {
 		timer = new Timer(1000 / fps, this);
-		
+
 		po = new PacboiObject(PacboiStartX, PacboiStartY);
 		ghostList.add(new GhostObject(275, 92));
 		ghostList.add(new GhostObject(550, 230));
@@ -83,6 +86,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		} else if (currentState == 1) {
 			om.draw(g);
 		}
+		if (dying) {
+			g.setColor(Color.RED);
+			g.fillRect(320, 30, 100, 150);
+		}
+		
+		
 		repaint();
 	}
 
@@ -132,7 +141,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
 			if (om.checkMazeCollision(R)) {
 				die();
-				keyPressedR=false;
+				keyPressedR = false;
 			} else {
 				po.x += speed;
 			}
@@ -141,7 +150,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			Rectangle L = new Rectangle(po.x - speed, po.y, po.width, po.height);
 			if (om.checkMazeCollision(L)) {
 				die();
-				keyPressedL=false;
+				keyPressedL = false;
 			} else {
 				po.x -= speed;
 			}
@@ -151,7 +160,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			Rectangle U = new Rectangle(po.x, po.y - speed, po.width, po.height);
 			if (om.checkMazeCollision(U)) {
 				die();
-				keyPressedU=false;
+				keyPressedU = false;
 			} else {
 				po.y -= speed;
 			}
@@ -160,7 +169,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			Rectangle D = new Rectangle(po.x, po.y + speed, po.width, po.height);
 			if (om.checkMazeCollision(D)) {
 				die();
-				keyPressedD=false;
+				keyPressedD = false;
 			} else {
 				po.y += speed;
 			}
@@ -178,7 +187,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (po.x < 0) {
 			po.x = 0;
 		}
-		om.checkGhostCollision(po.pacCollision);
+		boolean gCollide = om.checkGhostCollision(po.pacCollision);
+		if (gCollide) {
+			die();
+		}
 		repaint();
 	}
 
@@ -191,6 +203,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if (dying) {
+			clearKeyFlags();
+			return;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			currentState = 1;
 		}
@@ -207,20 +223,23 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			keyPressedR = true;
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			keyPressedU = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_W) {
 			keyPressedU = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			keyPressedL = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			keyPressedL = true;
 
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			keyPressedD = true;
 		}
 
@@ -230,29 +249,42 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		e.consume();
 	}
 
+	private void clearKeyFlags() {
+		keyPressedR = false;
+		keyPressedL = false;
+		keyPressedD = false;
+		keyPressedU = false;
+	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			keyPressedR = false;
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			keyPressedU = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			keyPressedL = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			keyPressedD = false;
 		}
 		e.consume();
 	}
 
 	public void die() {
-		
+
+		dying = true;
 		JOptionPane.showMessageDialog(this, "u suck scrub");
-		 po.x=PacboiStartX;
-		 po.y=PacboiStartY;
-		 om.incrementDeath();
-		}
-	
+		clearKeyFlags();
+		po.x = PacboiStartX;
+		po.y = PacboiStartY;
+		om.incrementDeath();
+		dying = false;
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -262,6 +294,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// om.checkCollision();
 		move();
 		om.score--;
-		
 	}
+
 }
