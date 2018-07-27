@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int scoreboard = 8;
 	Font titleFont;
 	Font subFont;
+	Date startDieTime;
 	public static BufferedImage ghostImg;
 	public static BufferedImage pacboiImg;
 	int pacboiCol = 0;
@@ -88,7 +90,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		if (dying) {
 			g.setColor(Color.RED);
-			g.fillRect(320, 30, 100, 150);
+			g.fillRect(220, 250, 230, 200);
+			g.setColor(Color.WHITE);
+			g.drawString("YOU DIED", 230, 280);
 		}
 		
 		
@@ -277,12 +281,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public void die() {
 
 		dying = true;
-		JOptionPane.showMessageDialog(this, "u suck scrub");
-		clearKeyFlags();
-		po.x = PacboiStartX;
-		po.y = PacboiStartY;
-		om.incrementDeath();
-		dying = false;
+		startDieTime = new Date();
+		
 
 	}
 
@@ -294,6 +294,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// om.checkCollision();
 		move();
 		om.score--;
+		if (dying) {
+			Date now = new Date();
+			if (now.getTime()-startDieTime.getTime()>3000) {
+				clearKeyFlags();
+				po.x = PacboiStartX;
+				po.y = PacboiStartY;
+				om.incrementDeath();
+				
+				dying = false;
+			}
+		}
 	}
 
 }
