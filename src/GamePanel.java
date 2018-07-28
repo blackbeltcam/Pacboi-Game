@@ -296,13 +296,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		om.score--;
 		if (dying) {
 			Date now = new Date();
-			if (now.getTime()-startDieTime.getTime()>3000) {
+			if (now.getTime()-startDieTime.getTime()>4000) {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
 				om.incrementDeath();
 				
 				dying = false;
+				
+			}
+			else if (now.getTime()-startDieTime.getTime()>3000) {
+				
 			}
 		}
 	}
