@@ -7,8 +7,7 @@ import java.util.ArrayList;
 public class ObjectManager {
 	PacboiObject pacboiobj;
 	GamePanel gp;
-	Font deathFont;
-	Integer score;
+	
 	Rectangle respawn;
 	int fps;
 	// GhostObject ghostobj;
@@ -16,15 +15,14 @@ public class ObjectManager {
 	ArrayList<GhostObject> ghostList;
 	
 
-	private static Integer deathCounter = 0;
+	
 
 	public ObjectManager(PacboiObject pacboiobj, ArrayList<GhostObject> ghostList, int fps) {
 		mazeList = new ArrayList<MazeObject>();
 		this.pacboiobj = pacboiobj;
 		this.ghostList = ghostList;
 		this.fps=fps;
-		deathFont = new Font("TimesRoman", Font.BOLD, 40);
-		score=fps*34;
+		
 
 	}
 
@@ -43,20 +41,12 @@ public class ObjectManager {
 
 		}
 		pacboiobj.draw(g);
-		g.setColor(Color.WHITE);
-		g.setFont(deathFont);
-		g.drawString("Deaths", 2, 30);
-		g.drawString(deathCounter.toString(), 50, 80);
 		
-		g.drawString("Highscore", 515, 30);
-		g.drawString(score.toString(), 515, 80);
 		
 		
 	}
 
-	public void incrementDeath() {
-		deathCounter++;
-	}
+	
 
 	public void addMazeObject(MazeObject m) {
 		mazeList.add(m);

@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	ObjectManager om;
 	MazeObject maze;
 	PacboiObject po;
-	ArrayList<GhostObject> ghostList = new ArrayList();
+	ArrayList<GhostObject> ghostList = new ArrayList<GhostObject>();
 	static final int numRows = 17;
 	static final int numCols = 15;
 	static final int empty = 0;
@@ -36,6 +36,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	Font titleFont;
 	Font subFont;
 	Date startDieTime;
+	Integer timeLeft;
+	Font deathFont;
+	Integer score=2000;
+	private static Integer deathCounter = 0;
+	static final Integer countdownMax = 3;
 	public static BufferedImage ghostImg;
 	public static BufferedImage pacboiImg;
 	int pacboiCol = 0;
@@ -44,7 +49,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int speed = 5;
 	int PacboiStartX = 0;
 	int PacboiStartY = 697;
-
+	int dyingTime = 3;
 	int fps = 60;
 	Timer timer;
 	boolean keyPressedR = false;
@@ -77,25 +82,45 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		drawMaze();
+		deathFont = new Font("Comic Sans", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
 		timer.start();
 	}
 
 	public void paintComponent(Graphics g) {
+		
+		
+		
+		
+		
 		if (currentState == 0) {
 			drawMenuState(g);
 		} else if (currentState == 1) {
 			om.draw(g);
+			
+			g.setColor(Color.WHITE);
+			//deaths
+			
+			
+			g.drawString("Deaths", 2, 30);
+			g.drawString(deathCounter.toString(), 50, 80);
+			//score
+			g.setFont(titleFont);
+			g.drawString("Score", 515, 30);
+			g.drawString(score.toString(), 515, 80);
 		}
 		if (dying) {
+			
+			Integer c = (countdownMax-timeLeft/1000);
+			
 			g.setColor(Color.RED);
 			g.fillRect(220, 250, 230, 200);
 			g.setColor(Color.WHITE);
+			g.drawString(c.toString(), 325, 400);
 			g.drawString("YOU DIED", 230, 280);
 		}
-		
-		
+
 		repaint();
 	}
 
@@ -259,6 +284,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		keyPressedD = false;
 		keyPressedU = false;
 	}
+	
+	public void incrementDeath() {
+		deathCounter++;
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -282,7 +311,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 		dying = true;
 		startDieTime = new Date();
-		
 
 	}
 
@@ -291,22 +319,22 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 
 		om.update();
+
 		// om.checkCollision();
 		move();
-		om.score--;
+		score--;
 		if (dying) {
 			Date now = new Date();
-			if (now.getTime()-startDieTime.getTime()>4000) {
+			timeLeft = (int) (now.getTime() - startDieTime.getTime());
+
+			if (timeLeft > 3000) {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
-				om.incrementDeath();
-				
+				incrementDeath();
+
 				dying = false;
-				
-			}
-			else if (now.getTime()-startDieTime.getTime()>3000) {
-				
+
 			}
 		}
 	}
