@@ -33,6 +33,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int ghost = 6;
 	static final int watermark = 7;
 	static final int scoreboard = 8;
+	static final Integer countdownMax = 3;
+	static final int titleState=0;
+	static final int gameState=1;
 	Font titleFont;
 	Font subFont;
 	Date startDieTime;
@@ -40,12 +43,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	Font deathFont;
 	Integer score=2000;
 	private static Integer deathCounter = 0;
-	static final Integer countdownMax = 3;
+	int currentState=titleState;
 	public static BufferedImage ghostImg;
 	public static BufferedImage pacboiImg;
+	public static BufferedImage keyImg;
+	public static BufferedImage keyholeImg;
 	int pacboiCol = 0;
 	int pacboiRow = 13;
-	int currentState = 0;
+	boolean startScore=false;
 	int speed = 5;
 	int PacboiStartX = 0;
 	int PacboiStartY = 697;
@@ -81,8 +86,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
+		keyImg = ImageIO.read(this.getClass().getResourceAsStream("Key.png"));
+		keyholeImg = ImageIO.read(this.getClass().getResourceAsStream("KeyHole.png"));
 		drawMaze();
-		deathFont = new Font("Comic Sans", Font.BOLD, 30);
+		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
 		timer.start();
@@ -94,19 +101,19 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		
 		
 		
-		if (currentState == 0) {
+		if (currentState==titleState) {
 			drawMenuState(g);
-		} else if (currentState == 1) {
+		} else if (currentState == gameState) {
 			om.draw(g);
 			
 			g.setColor(Color.WHITE);
 			//deaths
 			
-			
+			g.setFont(deathFont);
 			g.drawString("Deaths", 2, 30);
 			g.drawString(deathCounter.toString(), 50, 80);
 			//score
-			g.setFont(titleFont);
+			g.setFont(deathFont);
 			g.drawString("Score", 515, 30);
 			g.drawString(score.toString(), 515, 80);
 		}
@@ -167,6 +174,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// }
 
 		if (keyPressedR == true) {
+			startScore=true;
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
 			if (om.checkMazeCollision(R)) {
 				die();
@@ -217,8 +225,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			po.x = 0;
 		}
 		boolean gCollide = om.checkGhostCollision(po.pacCollision);
-		if (gCollide) {
+		if (gCollide && !dying) {
 			die();
+		}
+		boolean kCollide = om.checkKeyCollision(po.pacCollision);
+		if (kCollide) {
+			System.out.println(kCollide);
 		}
 		repaint();
 	}
@@ -308,9 +320,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void die() {
-
-		dying = true;
 		startDieTime = new Date();
+		dying = true;
 
 	}
 
@@ -322,17 +333,24 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 		// om.checkCollision();
 		move();
-		score--;
+		if (currentState==gameState && !dying && startScore){
+			score--;
+		}
+		if (score==0 && dying==false) {
+			die();
+		}
+		
 		if (dying) {
+			
 			Date now = new Date();
 			timeLeft = (int) (now.getTime() - startDieTime.getTime());
-
 			if (timeLeft > 3000) {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
 				incrementDeath();
-
+				startScore=false;
+				score=2000;
 				dying = false;
 
 			}

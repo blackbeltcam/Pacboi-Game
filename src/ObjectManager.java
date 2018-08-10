@@ -74,6 +74,16 @@ public class ObjectManager {
 		}
 		return false;
 	}
+	public boolean checkKeyCollision(Rectangle K) {
+		for (MazeObject m : mazeList) {
+			if (m.block == GamePanel.key) {
+				if (K.intersects(m.keyCollision)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	public boolean checkMazeCollision(Rectangle P) {
 		for (MazeObject m : mazeList) {
