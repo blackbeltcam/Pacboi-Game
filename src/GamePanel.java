@@ -48,6 +48,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static BufferedImage pacboiImg;
 	public static BufferedImage keyImg;
 	public static BufferedImage keyholeImg;
+	public static BufferedImage pbacImg;
+	public static BufferedImage gbacImg;
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	boolean startScore=false;
@@ -84,10 +86,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		ghostList.add(new GhostObject(330, 645));
 		om = new ObjectManager(po, ghostList, fps);
 
-		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("orangeGhost2.png"));
+		ghostImg = ImageIO.read(this.getClass().getResourceAsStream("gbac.png"));
 		pacboiImg = ImageIO.read(this.getClass().getResourceAsStream("Pacboi.png"));
 		keyImg = ImageIO.read(this.getClass().getResourceAsStream("Key.png"));
 		keyholeImg = ImageIO.read(this.getClass().getResourceAsStream("KeyHole.png"));
+		pbacImg = ImageIO.read(this.getClass().getResourceAsStream("derpybac.png"));
+		gbacImg = ImageIO.read(this.getClass().getResourceAsStream("gbac.png"));
 		drawMaze();
 		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
@@ -142,18 +146,24 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	public void drawMenuState(Graphics g) {
 		// To activate, change currentState variable to 0
-		g.setColor(Color.PINK);
+		
+		g.setColor(new Color(110088));
 		g.fillRect(0, 0, Pacboi.height, Pacboi.width);
+		//pbacImg.
+		g.drawImage(pbacImg, 230, 300, 60, 60, null);
+		g.drawImage(gbacImg, 330, 300, 60, 60, null);
 		g.setColor(Color.BLACK);
 		g.setFont(titleFont);
 		g.drawString("Welcome To Pacboi!", 90, 100);
 		g.setFont(subFont);
 		g.setColor(Color.WHITE);
-		g.drawString("Press Space to Start", 200, 280);
+		g.drawString("A frustrating game for people who have a lot of time.", 90, 125);
+		g.setFont(deathFont);
+		g.drawString("Press Space to Start", 180, 420);
 		g.setColor(Color.BLUE);
-		g.drawString("Press I for Instructions", 350, 400);
+		g.drawString("Press I for Instructions", 150, 460);
 		g.setColor(Color.BLACK);
-		g.drawString("A frusterating game for people who have a lot of time.", 90, 125);
+		
 
 	}
 
@@ -322,7 +332,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public void die() {
 		startDieTime = new Date();
 		dying = true;
-
+		incrementDeath();
 	}
 
 	@Override
@@ -348,7 +358,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
-				incrementDeath();
+				
 				startScore=false;
 				score=2000;
 				dying = false;

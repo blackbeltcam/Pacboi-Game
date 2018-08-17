@@ -49,7 +49,7 @@ public class MazeObject  {
 		}
 		g.fillRect(x, y, blockWidth, blockHeight);
 		if (block == GamePanel.key) {
-			g.drawImage(GamePanel.keyImg, x, y, 20, 20, null);
+			g.drawImage(GamePanel.keyImg, x, y, 40, 40, null);
 		}
 		if (block == GamePanel.locked) {
 			g.drawImage(GamePanel.keyholeImg, x+3, y+3, 40, 40, null);
