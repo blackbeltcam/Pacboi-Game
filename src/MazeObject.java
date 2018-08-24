@@ -11,6 +11,7 @@ public class MazeObject  {
 	int x;
 	int y;
 	int block;
+	static boolean keyCollide=false;
 	Rectangle mazeCollision;
 	Rectangle keyCollision;
 	Random ran = new Random();
@@ -25,6 +26,10 @@ public class MazeObject  {
 		keyCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
 
+	public static void KeyCollide(boolean collide)  {
+		keyCollide=collide;
+	}
+	
 	public void draw(Graphics g) {
 
 		// g.setColor(new Color(ran.nextInt(0xFFFFFF)));
@@ -48,7 +53,7 @@ public class MazeObject  {
 			g.setColor(Color.BLACK);
 		}
 		g.fillRect(x, y, blockWidth, blockHeight);
-		if (block == GamePanel.key) {
+		if (block == GamePanel.key && !keyCollide) {
 			g.drawImage(GamePanel.keyImg, x, y, 40, 40, null);
 		}
 		if (block == GamePanel.locked) {

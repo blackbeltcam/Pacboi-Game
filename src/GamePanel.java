@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -41,7 +42,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	Date startDieTime;
 	Integer timeLeft;
 	Font deathFont;
-	Integer score=2000;
+	Integer score=10000;
 	private static Integer deathCounter = 0;
 	int currentState=titleState;
 	public static BufferedImage ghostImg;
@@ -50,6 +51,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static BufferedImage keyholeImg;
 	public static BufferedImage pbacImg;
 	public static BufferedImage gbacImg;
+	public static ImageIcon questionmarkImg;
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	boolean startScore=false;
@@ -59,6 +61,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	int dyingTime = 3;
 	int fps = 60;
 	Timer timer;
+	
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
 	boolean keyPressedL = false;
@@ -92,6 +95,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		keyholeImg = ImageIO.read(this.getClass().getResourceAsStream("KeyHole.png"));
 		pbacImg = ImageIO.read(this.getClass().getResourceAsStream("derpybac.png"));
 		gbacImg = ImageIO.read(this.getClass().getResourceAsStream("gbac.png"));
+		questionmarkImg=new ImageIcon (getClass().getResource("questionmark.png"));
 		drawMaze();
 		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
@@ -240,7 +244,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		boolean kCollide = om.checkKeyCollision(po.pacCollision);
 		if (kCollide) {
-			System.out.println(kCollide);
+			MazeObject.KeyCollide(true);
 		}
 		repaint();
 	}
@@ -263,8 +267,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_I) {
-			JOptionPane.showMessageDialog(null,
-					"Use Arrow Keys to Move \n The aim of the game is ot grab the key, unlock the second area, and finish the level. \n It is not as simple as it seems though as PacBoi moves very fast so it is hard to control him.");
+			JOptionPane.showMessageDialog(this,
+					"Use Arrow Keys to Move \n The aim of the game is ot grab the key, "
+					+ "unlock the second area, and finish the level. \n It is not as simple"
+					+ " as it seems though as PacBoi moves very fast so it is hard to control him.", "Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE,
+					questionmarkImg);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			keyPressedR = true;
@@ -360,7 +367,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				po.y = PacboiStartY;
 				
 				startScore=false;
-				score=2000;
+				score=10000;
 				dying = false;
 
 			}
