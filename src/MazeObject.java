@@ -14,6 +14,7 @@ public class MazeObject  {
 	static boolean keyCollide=false;
 	Rectangle mazeCollision;
 	Rectangle keyCollision;
+	Rectangle lockCollision;
 	Random ran = new Random();
 
 	public MazeObject(int row, int col, int block) {
@@ -24,6 +25,7 @@ public class MazeObject  {
 		y = row * blockHeight;
 		mazeCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 		keyCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		lockCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
 
 	public static void KeyCollide(boolean collide)  {
@@ -55,6 +57,9 @@ public class MazeObject  {
 		g.fillRect(x, y, blockWidth, blockHeight);
 		if (block == GamePanel.key && !keyCollide) {
 			g.drawImage(GamePanel.keyImg, x, y, 40, 40, null);
+		}
+		if (block == GamePanel.key && keyCollide) {
+		g.drawImage(GamePanel.keyImg, PacboiObject.x-20, PacboiObject.y-10, 20, 20, null);
 		}
 		if (block == GamePanel.locked) {
 			g.drawImage(GamePanel.keyholeImg, x+3, y+3, 40, 40, null);

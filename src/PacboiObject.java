@@ -2,8 +2,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class PacboiObject  {
-	int x;
-	int y;
+	static public int x;
+	static public int y;
 	static final int width=35;
 	static final int height=35;
 	Rectangle pacCollision;
