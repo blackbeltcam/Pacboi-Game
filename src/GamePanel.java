@@ -340,6 +340,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		startDieTime = new Date();
 		dying = true;
 		incrementDeath();
+		MazeObject.keyCollide=false;
 	}
 
 	@Override

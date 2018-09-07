@@ -13,6 +13,9 @@ public PacboiObject(int x, int y) {
 	pacCollision=new Rectangle (x,y,width, height);
 }
 public void draw(Graphics g) {
+	if (MazeObject.keyCollide) {
+		g.drawImage(GamePanel.keyImg, PacboiObject.x-20, PacboiObject.y-10, 20, 20, null);
+		}
 	g.drawImage(GamePanel.pacboiImg, x, y, width, height, null);
 	pacCollision.setBounds(x,y, width, height);
 }

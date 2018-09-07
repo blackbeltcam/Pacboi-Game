@@ -29,13 +29,7 @@ public class ObjectManager {
 	public void draw(Graphics g) {
 		for (MazeObject m : mazeList) {
 			m.draw(g);
-			if (m.block == GamePanel.watermark) {
-				if (pacboiobj.pacCollision.intersects(m.mazeCollision)) {
-					System.out.println("HELP ME IM TRAPED");
-				}
-
-			}
-		}
+					}
 		for (GhostObject gh : ghostList) {
 			gh.draw(g);
 
@@ -87,6 +81,7 @@ public class ObjectManager {
 	
 	public boolean checkMazeCollision(Rectangle P) {
 		for (MazeObject m : mazeList) {
+			if (m.block == GamePanel.fill && MazeObject.keyCollide)
 			if (m.block == GamePanel.fill || m.block == GamePanel.scoreboard) {
 				if (P.intersects(m.mazeCollision)) {
 					return true;
@@ -95,4 +90,16 @@ public class ObjectManager {
 		}
 		return false;
 	}
+	
+	public boolean checkLockCollision(Rectangle G) {
+		for (MazeObject m : mazeList) {
+			if (m.block == GamePanel.locked) {
+				if (G.intersects(m.lockCollision)) {
+					return true;
+				}
+	
 }
+}
+		return false;
+	}
+	}

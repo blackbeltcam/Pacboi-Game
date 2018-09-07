@@ -58,21 +58,19 @@ public class MazeObject  {
 		if (block == GamePanel.key && !keyCollide) {
 			g.drawImage(GamePanel.keyImg, x, y, 40, 40, null);
 		}
-		if (block == GamePanel.key && keyCollide) {
-		g.drawImage(GamePanel.keyImg, PacboiObject.x-20, PacboiObject.y-10, 20, 20, null);
-		}
+		
 		if (block == GamePanel.locked) {
 			g.drawImage(GamePanel.keyholeImg, x+3, y+3, 40, 40, null);
+			
 		}
 	
+		
 
-//		if (block == GamePanel.ghost) {
-//			g.drawImage(GamePanel.ghostImg, x, y, blockWidth, blockHeight, null);
-//
-//		}
+
 mazeCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
-
+			
+		
 	
 public void update() {
 	
