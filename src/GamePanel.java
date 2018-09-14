@@ -35,16 +35,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int watermark = 7;
 	static final int scoreboard = 8;
 	static final Integer countdownMax = 3;
-	static final int titleState=0;
-	static final int gameState=1;
+	static final int titleState = 0;
+	static final int gameState = 1;
 	Font titleFont;
 	Font subFont;
 	Date startDieTime;
 	Integer timeLeft;
 	Font deathFont;
-	Integer score=10000;
+	Integer score = 10000;
 	private static Integer deathCounter = 0;
-	int currentState=titleState;
+	int currentState = titleState;
 	public static BufferedImage ghostImg;
 	public static BufferedImage pacboiImg;
 	public static BufferedImage keyImg;
@@ -54,14 +54,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static ImageIcon questionmarkImg;
 	int pacboiCol = 0;
 	int pacboiRow = 13;
-	boolean startScore=false;
+	boolean startScore = false;
+
 	int speed = 5;
 	int PacboiStartX = 0;
 	int PacboiStartY = 697;
 	int dyingTime = 3;
 	int fps = 60;
 	Timer timer;
-	
+
 	boolean keyPressedR = false;
 	boolean keyPressedD = false;
 	boolean keyPressedL = false;
@@ -95,7 +96,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		keyholeImg = ImageIO.read(this.getClass().getResourceAsStream("KeyHole.png"));
 		pbacImg = ImageIO.read(this.getClass().getResourceAsStream("derpybac.png"));
 		gbacImg = ImageIO.read(this.getClass().getResourceAsStream("gbac.png"));
-		questionmarkImg=new ImageIcon (getClass().getResource("questionmark.png"));
+		questionmarkImg = new ImageIcon(getClass().getResource("questionmark.png"));
 		drawMaze();
 		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
@@ -104,36 +105,32 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void paintComponent(Graphics g) {
-		
-		
-		
-		
-		
-		if (currentState==titleState) {
+
+		if (currentState == titleState) {
 			drawMenuState(g);
 		} else if (currentState == gameState) {
 			om.draw(g);
-			
+
 			g.setColor(Color.WHITE);
-			//deaths
-			
+			// deaths
+
 			g.setFont(deathFont);
 			g.drawString("Deaths", 2, 30);
 			g.drawString(deathCounter.toString(), 50, 80);
-			//score
+			// score
 			g.setFont(deathFont);
 			g.drawString("Score", 515, 30);
 			g.drawString(score.toString(), 515, 80);
 		}
 		if (dying) {
-			
-			Integer c = (countdownMax-timeLeft/1000);
-			
+
+			Integer c = (countdownMax - timeLeft / 1000);
+
 			g.setColor(Color.RED);
 			g.fillRect(220, 250, 230, 200);
 			g.setColor(Color.WHITE);
 			g.drawString(c.toString(), 325, 400);
-			g.drawString("YOU DIED", 230, 280);
+			g.drawString("  YOU DIED", 230, 280);
 		}
 
 		repaint();
@@ -150,10 +147,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	public void drawMenuState(Graphics g) {
 		// To activate, change currentState variable to 0
-		
+
 		g.setColor(new Color(110088));
-		g.fillRect(0, 0, Pacboi.height, Pacboi.width);
-		//pbacImg.
+		g.fillRect(0, 0, Pacboi.width, Pacboi.height);
+		// pbacImg.
 		g.drawImage(pbacImg, 230, 300, 60, 60, null);
 		g.drawImage(gbacImg, 330, 300, 60, 60, null);
 		g.setColor(Color.BLACK);
@@ -167,7 +164,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		g.setColor(Color.BLUE);
 		g.drawString("Press I for Instructions", 150, 460);
 		g.setColor(Color.BLACK);
-		
 
 	}
 
@@ -188,15 +184,18 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// }
 
 		if (keyPressedR == true) {
-			startScore=true;
+			startScore = true;
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
-			if (om.checkMazeCollision(R)) {
+			if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
+			}
+
+			else if (om.checkMazeCollision(R)) {
 				die();
 				keyPressedR = false;
 			} else {
 				po.x += speed;
-			}
 
+			}
 		} else if (keyPressedL == true) {
 			Rectangle L = new Rectangle(po.x - speed, po.y, po.width, po.height);
 			if (om.checkMazeCollision(L)) {
@@ -269,9 +268,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_I) {
 			JOptionPane.showMessageDialog(this,
 					"Use Arrow Keys to Move \n The aim of the game is ot grab the key, "
-					+ "unlock the second area, and finish the level. \n It is not as simple"
-					+ " as it seems though as PacBoi moves very fast so it is hard to control him.", "Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE,
-					questionmarkImg);
+							+ "unlock the second area, and finish the level. \n It is not as simple"
+							+ " as it seems though as PacBoi moves very fast so it is hard to control him.",
+					"Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE, questionmarkImg);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			keyPressedR = true;
@@ -313,7 +312,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		keyPressedD = false;
 		keyPressedU = false;
 	}
-	
+
 	public void incrementDeath() {
 		deathCounter++;
 	}
@@ -340,7 +339,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		startDieTime = new Date();
 		dying = true;
 		incrementDeath();
-		MazeObject.keyCollide=false;
+		MazeObject.keyCollide = false;
 	}
 
 	@Override
@@ -351,24 +350,24 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 		// om.checkCollision();
 		move();
-		if (currentState==gameState && !dying && startScore){
+		if (currentState == gameState && !dying && startScore) {
 			score--;
 		}
-		if (score==0 && dying==false) {
+		if (score == 0 && dying == false) {
 			die();
 		}
-		
+
 		if (dying) {
-			
+
 			Date now = new Date();
 			timeLeft = (int) (now.getTime() - startDieTime.getTime());
 			if (timeLeft > 3000) {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
-				
-				startScore=false;
-				score=10000;
+
+				startScore = false;
+				score = 10000;
 				dying = false;
 
 			}

@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-public class MazeObject  {
+public class MazeObject {
 	int row;
 	int col;
 	static int blockHeight = Pacboi.height / GamePanel.numRows;
@@ -11,10 +11,10 @@ public class MazeObject  {
 	int x;
 	int y;
 	int block;
-	static boolean keyCollide=false;
+	static boolean keyCollide = false;
 	Rectangle mazeCollision;
 	Rectangle keyCollision;
-	Rectangle lockCollision;
+	static Rectangle lockCollision;
 	Random ran = new Random();
 
 	public MazeObject(int row, int col, int block) {
@@ -23,30 +23,30 @@ public class MazeObject  {
 		this.block = block;
 		x = col * blockWidth;
 		y = row * blockHeight;
-		mazeCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
-		keyCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
-		lockCollision=new Rectangle (x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		mazeCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		keyCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		if (block == GamePanel.locked) {
+			lockCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		}
 	}
 
-	public static void KeyCollide(boolean collide)  {
-		keyCollide=collide;
+	public static void KeyCollide(boolean collide) {
+		keyCollide = collide;
 	}
-	
+
 	public void draw(Graphics g) {
 
 		// g.setColor(new Color(ran.nextInt(0xFFFFFF)));
 
 		if (block == GamePanel.empty) {
 			g.setColor(Color.GRAY);
-			
+
 		} else if (block == GamePanel.fill) {
 			g.setColor(Color.BLUE);
-		}
-		else if (block == GamePanel.key) {
+		} else if (block == GamePanel.key) {
 			g.setColor(Color.YELLOW);
-			
-		}
-		 else if (block == GamePanel.locked) {
+
+		} else if (block == GamePanel.locked) {
 			g.setColor(Color.CYAN);
 
 		} else if (block == GamePanel.watermark) {
@@ -58,21 +58,18 @@ public class MazeObject  {
 		if (block == GamePanel.key && !keyCollide) {
 			g.drawImage(GamePanel.keyImg, x, y, 40, 40, null);
 		}
-		
+
 		if (block == GamePanel.locked) {
-			g.drawImage(GamePanel.keyholeImg, x+3, y+3, 40, 40, null);
-			
+			g.drawImage(GamePanel.keyholeImg, x + 3, y + 3, 40, 40, null);
+
 		}
-	
-		
 
-
-mazeCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		mazeCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 	}
-			
-		
-	
-public void update() {
-	
-}
+	public static Rectangle getLockRectangle() {
+		return lockCollision;
+	}
+	public void update() {
+
+	}
 }

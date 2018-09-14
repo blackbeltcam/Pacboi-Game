@@ -81,7 +81,7 @@ public class ObjectManager {
 	
 	public boolean checkMazeCollision(Rectangle P) {
 		for (MazeObject m : mazeList) {
-			if (m.block == GamePanel.fill && MazeObject.keyCollide)
+			//if (m.block == GamePanel.fill && MazeObject.keyCollide)
 			if (m.block == GamePanel.fill || m.block == GamePanel.scoreboard) {
 				if (P.intersects(m.mazeCollision)) {
 					return true;
