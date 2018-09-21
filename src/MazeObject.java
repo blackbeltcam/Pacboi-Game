@@ -43,12 +43,14 @@ public class MazeObject {
 
 		} else if (block == GamePanel.fill) {
 			g.setColor(Color.BLUE);
-		} else if (block == GamePanel.key) {
+		} else if (block == GamePanel.ending) {
+			
+	}else if (block == GamePanel.key) {
 			g.setColor(Color.YELLOW);
 
 		} else if (block == GamePanel.locked) {
 			g.setColor(Color.CYAN);
-
+			
 		} else if (block == GamePanel.watermark) {
 			g.setColor(Color.GREEN);
 		} else {

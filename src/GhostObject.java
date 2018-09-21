@@ -10,12 +10,12 @@ public class GhostObject {
 	public GhostObject(int x, int y) {
 		this.x = x;
 		this.y = y;
-		ghostCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		ghostCollision = new Rectangle(x+10, y+10, MazeObject.blockWidth-20, MazeObject.blockHeight-20);
 	}
 
 	public void draw(Graphics g) {
 		g.drawImage(GamePanel.ghostImg, (int) x, (int) y, MazeObject.blockWidth, MazeObject.blockHeight, null);
-		ghostCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		ghostCollision.setBounds(x+10, y+10, MazeObject.blockWidth-20, MazeObject.blockHeight-20);
 	}
 
 	public void update() {
@@ -23,7 +23,7 @@ public class GhostObject {
 			direction = -direction;
 		}
 		y += direction;
-		ghostCollision.setBounds(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		ghostCollision.setBounds(x+10, y+10, MazeObject.blockWidth-20, MazeObject.blockHeight-20);
 	}
 
 }

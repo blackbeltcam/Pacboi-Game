@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int ghost = 6;
 	static final int watermark = 7;
 	static final int scoreboard = 8;
+	static final int ending = 9;
 	static final Integer countdownMax = 3;
 	static final int titleState = 0;
 	static final int gameState = 1;
@@ -75,9 +76,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0 },
-			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0 },
-			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/* this one */, 0, 0, 0, 0, 0 },
-			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
+			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 9 },
+			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/* this one */, 0, 0, 0, 0, 9 },
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 9 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9 } };
 
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
@@ -365,7 +366,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				clearKeyFlags();
 				po.x = PacboiStartX;
 				po.y = PacboiStartY;
-
+				MazeObject.keyCollide = false;
 				startScore = false;
 				score = 10000;
 				dying = false;
