@@ -52,7 +52,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static BufferedImage keyholeImg;
 	public static BufferedImage pbacImg;
 	public static BufferedImage gbacImg;
+	public static BufferedImage endImg;
 	public static ImageIcon questionmarkImg;
+	
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	boolean startScore = false;
@@ -75,10 +77,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0 },
-			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 9 },
+			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 9 }, { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 9 },
+			{ 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 9 }, { 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 9 },
 			{ 1, 0, 1, 0, 1, 1, 0, 0, 0, 0/* this one */, 0, 0, 0, 0, 9 },
-			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 9 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9 } };
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 9 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 } };
 
 	MazeObject[][] grid = new MazeObject[numRows][numCols];
 
@@ -97,6 +99,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		keyholeImg = ImageIO.read(this.getClass().getResourceAsStream("KeyHole.png"));
 		pbacImg = ImageIO.read(this.getClass().getResourceAsStream("derpybac.png"));
 		gbacImg = ImageIO.read(this.getClass().getResourceAsStream("gbac.png"));
+		endImg = ImageIO.read(this.getClass().getResourceAsStream("ending.png"));
 		questionmarkImg = new ImageIcon(getClass().getResource("questionmark.png"));
 		drawMaze();
 		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
@@ -187,10 +190,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (keyPressedR == true) {
 			startScore = true;
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
-			if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
-			}
+			//if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
+			//}
 
-			else if (om.checkMazeCollision(R)) {
+			if (om.checkMazeCollision(R)) {
 				die();
 				keyPressedR = false;
 			} else {
@@ -341,6 +344,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		dying = true;
 		incrementDeath();
 		MazeObject.keyCollide = false;
+	}
+	
+	public void win() {
+		//DO THIS NEXT CLASSSSSS
 	}
 
 	@Override
