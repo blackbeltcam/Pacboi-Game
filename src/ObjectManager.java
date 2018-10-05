@@ -101,6 +101,7 @@ public class ObjectManager {
 		for (MazeObject m : mazeList) {
 			if (m.block == GamePanel.ending) {
 				if (C.intersects(m.endCollision)) {
+					System.out.println("working");
 					return true;
 				}
 			}

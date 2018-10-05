@@ -249,6 +249,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (kCollide) {
 			MazeObject.KeyCollide(true);
 		}
+		boolean eCollide = om.checkEndCollision(po.pacCollision);
+		if (eCollide) {
+			win();
+		}
 		repaint();
 	}
 
@@ -271,7 +275,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_I) {
 			JOptionPane.showMessageDialog(this,
-					"Use Arrow Keys to Move \n The aim of the game is ot grab the key, "
+					"Use Arrow Keys to Move \n The aim of the game is to grab the key, "
 							+ "unlock the second area, and finish the level. \n It is not as simple"
 							+ " as it seems though as PacBoi moves very fast so it is hard to control him.",
 					"Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE, questionmarkImg);
@@ -347,9 +351,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 	
 	public void win() {
-		//DO THIS NEXT CLASSSSSS
+	System.out.println("working");
+	
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
