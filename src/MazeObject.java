@@ -26,7 +26,7 @@ public class MazeObject {
 		y = row * blockHeight;
 		mazeCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 		keyCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
-		endCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
+		endCollision = new Rectangle(x, 460, MazeObject.blockWidth, 276);
 		if (block == GamePanel.locked) {
 			lockCollision = new Rectangle(x, y, MazeObject.blockWidth, MazeObject.blockHeight);
 		}

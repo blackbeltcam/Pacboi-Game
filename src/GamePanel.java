@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final Integer countdownMax = 3;
 	static final int titleState = 0;
 	static final int gameState = 1;
+	static final int winState = 2;
 	Font titleFont;
 	Font subFont;
 	Date startDieTime;
@@ -54,13 +55,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public static BufferedImage gbacImg;
 	public static BufferedImage endImg;
 	public static ImageIcon questionmarkImg;
-	
+
 	int pacboiCol = 0;
 	int pacboiRow = 13;
 	boolean startScore = false;
 
 	int speed = 5;
-	int PacboiStartX = 0;
+	int PacboiStartX = 600;
 	int PacboiStartY = 697;
 	int dyingTime = 3;
 	int fps = 60;
@@ -114,7 +115,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			drawMenuState(g);
 		} else if (currentState == gameState) {
 			om.draw(g);
-
+			
 			g.setColor(Color.WHITE);
 			// deaths
 
@@ -125,6 +126,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			g.setFont(deathFont);
 			g.drawString("Score", 515, 30);
 			g.drawString(score.toString(), 515, 80);
+	
+			
+		} else if (currentState == winState) {
+			drawWinState(g);
 		}
 		if (dying) {
 
@@ -171,6 +176,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	}
 
+	public void drawWinState(Graphics g) {
+		g.setColor(new Color(65, 105, 225));
+		g.fillRect(0, 0, Pacboi.width, Pacboi.height);
+	}
+
 	public void move() {
 
 		// if (keyPressedL && keyPressedU) {
@@ -190,8 +200,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (keyPressedR == true) {
 			startScore = true;
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
-			//if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
-			//}
+			// if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
+			// }
 
 			if (om.checkMazeCollision(R)) {
 				die();
@@ -251,7 +261,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		boolean eCollide = om.checkEndCollision(po.pacCollision);
 		if (eCollide) {
-			win();
+			currentState=winState;
 		}
 		repaint();
 	}
@@ -272,7 +282,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			currentState = 1;
 		}
-
+		if (e.getKeyCode() == KeyEvent.VK_Y) {
+			currentState = 0;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_I) {
 			JOptionPane.showMessageDialog(this,
 					"Use Arrow Keys to Move \n The aim of the game is to grab the key, "
@@ -349,12 +361,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		incrementDeath();
 		MazeObject.keyCollide = false;
 	}
-	
-	public void win() {
-	System.out.println("working");
-	
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
