@@ -41,9 +41,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int winState = 2;
 	Font titleFont;
 	Font subFont;
+	Font winFont;
+	Font deathFont;
 	Date startDieTime;
 	Integer timeLeft;
-	Font deathFont;
 	Integer score = 10000;
 	private static Integer deathCounter = 0;
 	int currentState = titleState;
@@ -72,6 +73,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	boolean keyPressedL = false;
 	boolean keyPressedU = false;
 	boolean dying;
+	boolean winning;
 	int[][] block = { { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 }, { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 },
 			{ 1, 0, 0, 0, 0, 0, 0/* this one */, 0, 0, 1, 1, 1, 7, 7, 7 },
 			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 }, { 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4 },
@@ -106,6 +108,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		deathFont = new Font("Comic Sans MS", Font.BOLD, 30);
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
+		winFont = new Font("Phosphate", Font.BOLD, 60);
 		timer.start();
 	}
 
@@ -179,6 +182,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public void drawWinState(Graphics g) {
 		g.setColor(new Color(65, 105, 225));
 		g.fillRect(0, 0, Pacboi.width, Pacboi.height);
+		g.setColor(new Color(225, 221, 0));
+		g.setFont(winFont);
+		g.drawString("CONGRATULATIONS!", 70, 200);
+		g.drawString("Try to beat your \n time of "+score, 70, 400);
 	}
 
 	public void move() {
@@ -262,6 +269,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		boolean eCollide = om.checkEndCollision(po.pacCollision);
 		if (eCollide) {
 			currentState=winState;
+			winning=true;
 		}
 		repaint();
 	}
@@ -292,35 +300,35 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 							+ " as it seems though as PacBoi moves very fast so it is hard to control him.",
 					"Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE, questionmarkImg);
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT && winning==false && currentState==gameState) {
 			keyPressedR = true;
 
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_D && winning==false && currentState==gameState) {
 			keyPressedR = true;
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_UP && winning==false && currentState==gameState) {
 			keyPressedU = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_W) {
+		if (e.getKeyCode() == KeyEvent.VK_W && winning==false && currentState==gameState) {
 			keyPressedU = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT && winning==false && currentState==gameState) {
 			keyPressedL = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_A) {
+		if (e.getKeyCode() == KeyEvent.VK_A && winning==false && currentState==gameState) {
 			keyPressedL = true;
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		if (e.getKeyCode() == KeyEvent.VK_DOWN && winning==false && currentState==gameState) {
 			keyPressedD = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_S) {
+		if (e.getKeyCode() == KeyEvent.VK_S && winning==false && currentState==gameState) {
 			keyPressedD = true;
 		}
 		e.consume();
