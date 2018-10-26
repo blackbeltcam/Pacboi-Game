@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	Font subFont;
 	Font winFont;
 	Font deathFont;
+	Font subwinFont;
 	Date startDieTime;
 	Integer timeLeft;
 	Integer score = 10000;
@@ -109,6 +110,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		titleFont = new Font("Arial", Font.BOLD, 48);
 		subFont = new Font("Arial", Font.PLAIN, 20);
 		winFont = new Font("Phosphate", Font.BOLD, 60);
+		subwinFont = new Font("Raanana", Font.BOLD, 40);
 		timer.start();
 	}
 
@@ -180,12 +182,20 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void drawWinState(Graphics g) {
+		po.x = PacboiStartX;
+		po.y = PacboiStartY;
 		g.setColor(new Color(65, 105, 225));
 		g.fillRect(0, 0, Pacboi.width, Pacboi.height);
 		g.setColor(new Color(225, 221, 0));
 		g.setFont(winFont);
 		g.drawString("CONGRATULATIONS!", 70, 200);
-		g.drawString("Try to beat your \n time of "+score, 70, 400);
+		g.setFont(subwinFont);
+		g.setColor(Color.CYAN);
+		g.drawString("Try to beat your ", 175, 350);
+		g.drawString("time of ", 220, 500);
+		g.setColor(Color.MAGENTA);
+		g.drawString(""+score, 380, 500);
+		
 	}
 
 	public void move() {
@@ -289,11 +299,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			currentState = 1;
+			score=10000;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_Y) {
-			currentState = 0;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_I) {
+		
+		if (e.getKeyCode() == KeyEvent.VK_I && currentState==0) {
 			JOptionPane.showMessageDialog(this,
 					"Use Arrow Keys to Move \n The aim of the game is to grab the key, "
 							+ "unlock the second area, and finish the level. \n It is not as simple"
