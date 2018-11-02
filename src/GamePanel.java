@@ -13,12 +13,15 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ObjectManager om;
 	MazeObject maze;
 	PacboiObject po;
@@ -36,7 +39,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	static final int scoreboard = 8;
 	static final int ending = 9;
 	static final Integer countdownMax = 3;
-	static final int titleState = 0;
+	static final int menuState = 0;
 	static final int gameState = 1;
 	static final int winState = 2;
 	Font titleFont;
@@ -48,7 +51,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	Integer timeLeft;
 	Integer score = 10000;
 	private static Integer deathCounter = 0;
-	int currentState = titleState;
+	int currentState = menuState;
 	public static BufferedImage ghostImg;
 	public static BufferedImage pacboiImg;
 	public static BufferedImage keyImg;
@@ -115,12 +118,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void paintComponent(Graphics g) {
-
-		if (currentState == titleState) {
+		
+		if (currentState == menuState) {
 			drawMenuState(g);
 		} else if (currentState == gameState) {
 			om.draw(g);
-			
+
 			g.setColor(Color.WHITE);
 			// deaths
 
@@ -131,8 +134,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			g.setFont(deathFont);
 			g.drawString("Score", 515, 30);
 			g.drawString(score.toString(), 515, 80);
-	
-			
+
 		} else if (currentState == winState) {
 			drawWinState(g);
 		}
@@ -194,8 +196,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		g.drawString("Try to beat your ", 175, 350);
 		g.drawString("time of ", 220, 500);
 		g.setColor(Color.MAGENTA);
-		g.drawString(""+score, 380, 500);
-		
+		g.drawString("" + score, 380, 500);
+		g.setColor(Color.BLACK);
+		g.drawString("Press ENTER to Restart", 100, 700);
+
 	}
 
 	public void move() {
@@ -277,9 +281,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			MazeObject.KeyCollide(true);
 		}
 		boolean eCollide = om.checkEndCollision(po.pacCollision);
-		if (eCollide) {
-			currentState=winState;
-			winning=true;
+		if (eCollide && currentState==gameState) {
+			currentState = winState;
+			
+			winning = true;
 		}
 		repaint();
 	}
@@ -297,47 +302,54 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			clearKeyFlags();
 			return;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			currentState = 1;
-			score=10000;
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && currentState == winState) {
+			winning = false;
+			currentState = menuState;
+			repaint();
 		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_I && currentState==0) {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE && currentState == menuState) {
+			currentState = gameState;
+			winning = false;
+			score=10000;
+			repaint();
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_I && currentState == menuState) {
 			JOptionPane.showMessageDialog(this,
 					"Use Arrow Keys to Move \n The aim of the game is to grab the key, "
 							+ "unlock the second area, and finish the level. \n It is not as simple"
 							+ " as it seems though as PacBoi moves very fast so it is hard to control him.",
 					"Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE, questionmarkImg);
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT && winning == false && currentState == gameState) {
+			keyPressedR = true;
+			
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_D && winning == false && currentState == gameState) {
 			keyPressedR = true;
 
 		}
-
-		if (e.getKeyCode() == KeyEvent.VK_D && winning==false && currentState==gameState) {
-			keyPressedR = true;
-
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_UP && winning == false && currentState == gameState) {
 			keyPressedU = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_W && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_W && winning == false && currentState == gameState) {
 			keyPressedU = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT && winning == false && currentState == gameState) {
 			keyPressedL = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_A && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_A && winning == false && currentState == gameState) {
 			keyPressedL = true;
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_DOWN && winning == false && currentState == gameState) {
 			keyPressedD = true;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_S && winning==false && currentState==gameState) {
+		if (e.getKeyCode() == KeyEvent.VK_S && winning == false && currentState == gameState) {
 			keyPressedD = true;
 		}
 		e.consume();
@@ -384,7 +396,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 
 		om.update();
-
 		// om.checkCollision();
 		move();
 		if (currentState == gameState && !dying && startScore) {
