@@ -66,8 +66,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	boolean startScore = false;
 
 	int speed = 5;
-	int PacboiStartX = 600;
-	int PacboiStartY = 697;
+	int PacboiStartX = 5;
+	int PacboiStartY = 695;
 	int dyingTime = 3;
 	int fps = 60;
 	Timer timer;
@@ -221,10 +221,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (keyPressedR == true) {
 			startScore = true;
 			Rectangle R = new Rectangle(po.x + speed, po.y, po.width, po.height);
-			// if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
-			// }
+			 if (!MazeObject.keyCollide && R.intersects(MazeObject.getLockRectangle())) {
+				 
+			 }
 
-			if (om.checkMazeCollision(R)) {
+			 else if (om.checkMazeCollision(R)) {
 				die();
 				keyPressedR = false;
 			} else {
@@ -303,6 +304,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			return;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && currentState == winState) {
+			startScore=false;
+			startDieTime = new Date();
+			MazeObject.keyCollide=false;
 			winning = false;
 			currentState = menuState;
 			repaint();
@@ -310,7 +314,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE && currentState == menuState) {
 			currentState = gameState;
 			winning = false;
-			score=10000;
+			score=6000;
 			repaint();
 		}
 
@@ -415,7 +419,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				po.y = PacboiStartY;
 				MazeObject.keyCollide = false;
 				startScore = false;
-				score = 10000;
+				score = 6000;
 				dying = false;
 
 			}
