@@ -134,6 +134,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			g.setFont(deathFont);
 			g.drawString("Score", 515, 30);
 			g.drawString(score.toString(), 515, 80);
+			//watermark
+			g.setFont(subFont);
+			g.drawString("A Game by", 560, 100);
 
 		} else if (currentState == winState) {
 			drawWinState(g);
