@@ -1,7 +1,6 @@
 import java.io.IOException;
-
 import javax.swing.JFrame;
-import javax.swing.Timer;
+
 
 public class Pacboi {
 	static final int width = 690;

@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Font;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ public class ObjectManager {
 
 	Rectangle respawn;
 	int fps;
-	// GhostObject ghostobj;
 	ArrayList<MazeObject> mazeList;
 	ArrayList<GhostObject> ghostList;
 
@@ -75,7 +73,6 @@ public class ObjectManager {
 
 	public boolean checkMazeCollision(Rectangle P) {
 		for (MazeObject m : mazeList) {
-			// if (m.block == GamePanel.fill && MazeObject.keyCollide)
 			if (m.block == GamePanel.fill || m.block == GamePanel.scoreboard) {
 				if (P.intersects(m.mazeCollision)) {
 					return true;
@@ -88,7 +85,7 @@ public class ObjectManager {
 	public boolean checkLockCollision(Rectangle G) {
 		for (MazeObject m : mazeList) {
 			if (m.block == GamePanel.locked) {
-				if (G.intersects(m.lockCollision)) {
+				if (G.intersects(MazeObject.lockCollision)) {
 					return true;
 				}
 
@@ -102,7 +99,7 @@ public class ObjectManager {
 			
 			if (m.block == GamePanel.ending) {
 				
-				if (C.intersects(m.endCollision)) {
+				if (C.intersects(MazeObject.endCollision)) {
 					return true;
 				}
 			}

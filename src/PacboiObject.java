@@ -7,9 +7,9 @@ public class PacboiObject  {
 	static final int width=35;
 	static final int height=35;
 	Rectangle pacCollision;
-public PacboiObject(int x, int y) {
-	this.x=x;
-	this.y=y;
+public PacboiObject(int newX, int newY) {
+	x=newX;
+	y=newY;
 	pacCollision=new Rectangle (x,y,width, height);
 }
 public void draw(Graphics g) {
