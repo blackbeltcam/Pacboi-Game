@@ -76,6 +76,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	boolean keyPressedD = false;
 	boolean keyPressedL = false;
 	boolean keyPressedU = false;
+	boolean ghostDie=false;
+	boolean wallDie=false;
+	boolean timeDie=false;
 	boolean dying;
 	boolean winning;
 	int[][] block = { { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 }, { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 },
@@ -143,15 +146,26 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (dying) {
 
 			Integer c = (countdownMax - timeLeft / 1000);
-
+			
 			g.setFont(deathFont);
 			g.setColor(Color.RED);
 			g.fillRect(220, 250, 230, 200);
-			g.setColor(Color.WHITE);
+			g.setColor(Color.YELLOW);
 			g.drawString(c.toString(), 325, 400);
 			g.drawString("  YOU DIED", 230, 280);
+			if (wallDie) {
+				g.drawString("You hit a wall", 230, 310);
+			}
+			else if (ghostDie) {
+				g.drawString("You hit a ghost", 226, 310);
+			}
+			else if (timeDie) {
+				g.drawString("Time caught up", 226, 310);
+				g.drawString("to you!", 240, 325);
+			}
 		}
-
+		
+		
 		repaint();
 	}
 
@@ -177,10 +191,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		g.setFont(subFont);
 		g.setColor(Color.WHITE);
 		g.drawString("A frustrating game for people who have a lot of time.", 90, 125);
+		g.setColor(Color.YELLOW);
+		g.drawString("Use Arrow Keys to Move. The aim of the game is to grab the key to unlock ", 20, 570);
+		g.drawString("the second area, and finish the level. It is not as simple as it seems though", 20, 600);	
+		g.drawString("as PacBoi moves very fast so it is hard to control him.", 100, 630);
 		g.setFont(deathFont);
-		g.drawString("Press Space to Start", 180, 420);
+		g.drawString("Instructions", 250, 500);
 		g.setColor(Color.BLUE);
-		g.drawString("Press I for Instructions", 150, 460);
+		g.drawString("Press Space to Start", 180, 420);
+		
+		
 		g.setColor(Color.BLACK);
 
 	}
@@ -251,6 +271,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 					PacboiObject.height);
 			if (om.checkMazeCollision(U)) {
 				die();
+				wallDie=true;
 				keyPressedU = false;
 			} else {
 				PacboiObject.y -= speed;
@@ -282,6 +303,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		boolean gCollide = om.checkGhostCollision(po.pacCollision);
 		if (gCollide && !dying) {
 			die();
+			ghostDie=true;
 		}
 		boolean kCollide = om.checkKeyCollision(po.pacCollision);
 		if (kCollide) {
@@ -322,13 +344,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			repaint();
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_I && currentState == menuState) {
-			JOptionPane.showMessageDialog(this,
-					"Use Arrow Keys to Move \n The aim of the game is to grab the key, "
-							+ "unlock the second area, and finish the level. \n It is not as simple"
-							+ " as it seems though as PacBoi moves very fast so it is hard to control him.",
-					"Pacboi Instructions", JOptionPane.INFORMATION_MESSAGE, questionmarkImg);
-		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT && winning == false && currentState == gameState) {
 			keyPressedR = true;
 
@@ -408,6 +424,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		if (score == 0 && dying == false) {
 			die();
+			timeDie=true;
 		}
 
 		if (dying) {
@@ -418,6 +435,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				clearKeyFlags();
 				PacboiObject.x = PacboiStartX;
 				PacboiObject.y = PacboiStartY;
+				wallDie=false;
+				ghostDie=false;
+				timeDie=false;
 				MazeObject.keyCollide = false;
 				startScore = false;
 				score = 3000;
