@@ -1,0 +1,29 @@
+*<*GAMETITLE*>*
+Pacboi
+*<*NAME*>*
+Cameron Tishler
+*<*LINK*>*
+
+*<*IMAGES*>*
+*<*ENDALLIMAGES*>*
+*<*FONT*>*
+Arial
+*<*COLORS*>*
+89
+47
+255
+*<*QUESTIONS*>*
+I was inspired by a game called World’s Hardest Game. As the title ensues, the game is very difficult. Being one of my favorite arcade games, I decided to go with the theme of Pacman. The reason I didn't make a different game is because so many other games have an element of luck. I think that my game should not have any luck, so that what I did.
+*<*ENDQUESTION*>*
+The biggest piece of feedback that I received from user testing is that I should get rid of pop-ups in my game. While at first, I was opposed to the suggestion, I think the change made sense as it gave me game more of a professional look. The other suggestion I had was to give the reason that you lost. Being the creator of my game, I thought it was perfectly clear why you died, but people who hadn't played the game before didn't know the reason they would die. So I added a reason for your death on the death screen.
+*<*ENDQUESTION*>*
+So the main class, simply titled "Pacboi" creates the foundation of the game. It makes the JFrame which is the ground floor for the game. It's the window that opens up whens you run it. The GamePanel basically tells the JFrame what to put in the window. The GamePanel is the class that I spent the most time in. The MazeObject is the class that deals with every block that has collision apart from the player. Everything from locked doors to ghosts all goes through the MazeObject to get a color and collision. There are some other classes, but those can be summed up into creating collision, assigning variables like x and y, and making the player work correctly.
+*<*ENDQUESTION*>*
+t
+*<*ENDQUESTION*>*
+The most difficult part of the project for me was deciding what I was going to do in the first place. I had many doubts that my game was not going be any good. But my teacher helped me narrow down what I was going to do and start coding (Thanks Wendy!). Other than that, the only other big challenge I had was getting my ghosts to work. They kept on freaking out and collision was not working. I eventually smoothed things over, but it was not a very fun 3 weeks. 
+*<*ENDQUESTION*>*
+I think the biggest thing that I would add is more levels. Sadly, stages take a while to make, so I only made one. More levels would be much better. The second thing I would add is sound. I found that sound would be out of place if I didn't spend an entire class on it. I didn't have time to do that, so I decided that there shouldn't be any sound. If I had the time, I would add a sound track and sound effects.
+*<*ENDQUESTION*>*
+*<*CUSTOMTOPICS*>*
+*#*EOF*#*
